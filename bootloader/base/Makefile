@@ -1,4 +1,4 @@
-BUILD ?= ../build
+BUILD = ../../build
 ASM ?= nasm
 
 all:

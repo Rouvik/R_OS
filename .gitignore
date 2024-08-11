@@ -1,2 +1,11 @@
 # ignore any executable binaries
 *.exe
+
+# ignore .vscode
+.vscode
+
+# Ignore Watcom Error files
+*.err
+
+# Ignore ini files
+*.ini

@@ -2,7 +2,7 @@
 .PHONY: all mkdirs bootloader bootbase bootsetup kernel emu debug stub
 
 # Stop printing the directories
-MAKEFLAGS += --no-print-directory
+# MAKEFLAGS += --no-print-directory
 
 SRC_BOOTLOADER := ./bootloader
 SRC_KERNEL := ./kernel
@@ -20,10 +20,10 @@ bootbase: $(BUILD)/bootbase.bin
 bootsetup: $(BUILD)/bootsetup.bin
 
 $(BUILD)/bootbase.bin: mkdirs
-	$(MAKE) -C $(SRC_BOOTLOADER)/base BUILD=$(abspath $(BUILD))
+	$(MAKE) -C $(SRC_BOOTLOADER)/base
 
 $(BUILD)/bootsetup.bin: mkdirs
-	$(MAKE) -C $(SRC_BOOTLOADER)/setup BUILD=$(abspath $(BUILD))
+	$(MAKE) -C $(SRC_BOOTLOADER)/setup
 
 # Kernel compile section ------------------------
 

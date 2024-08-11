@@ -1,6 +1,13 @@
 org 0x7E00
 bits 16
+
 %define ENDL 0x0D, 0x0A
+%define BOOT_INFO 0x7C03        ; pointer to location where bootbase.bin stores critical info
+
+jmp short begin
+nop
+; setup sector table -------------------------
+reserved_sectors: db 1
 
 begin:
     mov si, setup_msg

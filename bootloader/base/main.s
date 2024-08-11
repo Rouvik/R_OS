@@ -5,8 +5,9 @@ bits 16
 
 jmp short start
 nop
+
+; base disk info at 0x7C03 ------------------
 drive_number:                   db 0    ; memory location to store drive number
-setup_sectors:                  db 2    ; number of sectors taken by setup.bin
 
 start:
     mov [drive_number], dl      ; save the drive number
@@ -28,7 +29,7 @@ start:
     mov si, init_msg            ; display init message
     call puts
     
-    mov al, [setup_sectors]     ; read setup_sectors number of sectors
+    mov al, 1                   ; read the first sector after the bootbase to get to setup sector table
     mov ch, 0                   ; from cylinder 0
     mov cl, 2                   ; from sector 2
     mov dh, 0                   ; from head 0
@@ -36,9 +37,25 @@ start:
     mov bx, buffer
     call disk_read
 
+    mov al, [buffer + 3]        ; pointer to reserved_sectors from setup sector table
+    or al, al                   ; check if more reserved sectors
+    jz .success                 ; no need to load any more sectors
+
+    mov si, more_setup_msg      ; show the user loading setup parts, keep user informed
+    call puts
+
+    mov ch, 0                   ; from cylinder 0
+    mov cl, 3                   ; from sector 3
+    mov dh, 0                   ; from head 0
+    mov dl, [drive_number]
+    mov bx, buffer + 512        ; write to buffer + 512, ie, the next sector of RAM
+    call disk_read
+
+.success:
     mov si, success_msg         ; display success message
     call puts
 
+    mov dx, [drive_number]
     jmp buffer                  ; jump to buffer, setup.bin begins here
     hlt
     jmp globl_halt
@@ -135,7 +152,8 @@ puts:
 globl_halt:
     jmp globl_halt
 
-init_msg: db "Welcome to RBL - Rouvik's Boot Loader -- 11/08/2024 Licensed GNU GPL", ENDL, "Reading setup.bin for initialisation", ENDL, ENDL, 0
+init_msg: db "Welcome to RBL - Rouvik's Boot Loader -- 11/08/2024 Ver: 1.1 Licensed GNU GPL", ENDL, "Reading setup.bin for initialisation", ENDL, ENDL, 0
+more_setup_msg: db "Reading extra sectors...this might take some time...", ENDL, ENDL, 0
 success_msg: db "Loaded setup successfully! to 0x7E00", ENDL, ENDL, 0
 
 disk_read_error_msg: db "Failed to read disk after 3 tries, giving up... please reset and boot", ENDL, 0
