@@ -1,9 +1,11 @@
 Open Watcom Linker Version 2.0 beta Jul 17 2024 02:07:46 (64-bit)
 Copyright (c) 2002-2024 The Open Watcom Contributors. All Rights Reserved.
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       24/08/11 22:27:22
-Executable Image: ../../build/bootsetup_out.bin
+Created on:       24/08/13 00:44:10
+Executable Image: C:/Users/majir/Desktop/R_OS/build/bootsetup_out.bin
 creating a RAW Binary Image executable
+Error! E2028: entry is an undefined reference
+Error! E2028: _bios_writeCharTTY is an undefined reference
 
 
                         +------------+
@@ -13,7 +15,7 @@ creating a RAW Binary Image executable
 Group                           Address              Size
 =====                           =======              ====
 
-DGROUP                          00007eaa             00000016
+DGROUP                          00007e7c             00000016
 
 
 
@@ -24,11 +26,10 @@ DGROUP                          00007eaa             00000016
 Segment                Class          Group          Address         Size
 =======                =====          =====          =======         ====
 
-_ENTRY                 CODE           AUTO           00007e00        0000001b
-_TEXT                  CODE           AUTO           00007e1b        0000008f
-CONST                  DATA           DGROUP         00007eaa        00000016
-CONST2                 DATA           DGROUP         00007ec0        00000000
-_DATA                  DATA           DGROUP         00007ec0        00000000
+_TEXT                  CODE           AUTO           00007e00        0000007c
+CONST                  DATA           DGROUP         00007e7c        00000016
+CONST2                 DATA           DGROUP         00007e92        00000000
+_DATA                  DATA           DGROUP         00007e92        00000000
 
 
                         +----------------+
@@ -41,14 +42,10 @@ _DATA                  DATA           DGROUP         00007ec0        00000000
 Address        Symbol
 =======        ======
 
-Module: ../../build/bootsetup/bios_call.obj(asm/bios_call.s)
-00007e1b       _bios_writeCharTTY
-Module: ../../build/bootsetup/entry.obj(asm/entry.s)
-00007e04       entry
-Module: ../../build/bootsetup/main.obj(C:\Users\majir\Desktop\R_OS\bootloader\setup\wat_c\main.c)
-00007e2e+      putc_
-00007e55+      puts_
-00007e90       _cstart_
+Module: C:/Users/majir/Desktop/R_OS/build/bootsetup/main.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\main.c)
+00007e00+      putc_
+00007e27+      puts_
+00007e62+      _cstart_
 
 
                         +---------------------+
@@ -61,14 +58,23 @@ c = initialized communal data
 Module          Segment               Class           Address         Size
 ======          =======               =====           =======         ====
 
-asm/bios_call.s _TEXT                 CODE           00007e1b         00000013
-asm/entry.s     _ENTRY                CODE           00007e00         0000001b
-C:\Users\majir\Desktop\R_OS\bootloader\setup\wat_c\main.c
-                _TEXT                 CODE           00007e2e         0000007c
-                CONST                 DATA           00007eaa         00000016
-                CONST2                DATA           00007ec0         00000000
-                _DATA                 DATA           00007ec0         00000000
+C:\Users\majir\Desktop\R_OS\kernel\wat_c\main.c
+                _TEXT                 CODE           00007e00         0000007c
+                CONST                 DATA           00007e7c         00000016
+                CONST2                DATA           00007e92         00000000
+                _DATA                 DATA           00007e92         00000000
 Warning! W1014: stack segment not found
+
+
+                        +---------------------------+
+                        |   Unresolved References   |
+                        +---------------------------+
+
+Undefined Symbol                Referenced by
+================                =============
+
+_bios_writeCharTTY              C:/Users/majir/Desktop/R_OS/build/bootsetup/main.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\main.c)
+
 
 
                         +-----------------------+
@@ -76,6 +82,6 @@ Warning! W1014: stack segment not found
                         +-----------------------+
 
 Stack size:  0200 (512.)
-Memory size:  00c0 (192.)
-Entry point address: 00007e04
-Link time: 00:00.07
+Memory size:  0092 (146.)
+Entry point address: 00000000
+Link time: 00:00.01

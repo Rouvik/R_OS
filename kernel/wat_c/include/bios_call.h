@@ -3,6 +3,7 @@
 
 #include "stdint.h"
 
+// TTY
 void _cdecl bios_writeCharTTY(char ch, uint8_t page);
 
 #endif // __BIOS_CALL__
