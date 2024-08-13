@@ -4,6 +4,14 @@ A simple monolothic OS for learning x86 barebones and how OSes work
 ### Version:
 1.1
 
+# Branch Info:
+- The `main` branch contains code upto the second boot loader and will probably be renamed `bootloader` to be specific
+- The `flatmodel` branch contains code where I will focus on using the flat memory model and no paging for protected mode and develop a very simple
+(probably single process only) kernel
+- The future `pagedmodel` branch will contain more paged, better, and secure system to generate a multitasking OS (this is just an ambition I don't know how far will I get...)
+
+> Just because `flatmodel` branch uses a simple flat non paged memory doesn't mean that there will be no paging and process isolation and I will probably try to acheive those too
+
 # Sources:
 - [BIOS interrupts list](https://www.ctyme.com/intr/int.htm)
 - [OSDev Wiki](https://wiki.osdev.org/Expanded_Main_Page)
