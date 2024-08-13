@@ -152,7 +152,7 @@ puts:
 globl_halt:
     jmp globl_halt
 
-init_msg: db "Welcome to RBL - Rouvik's Boot Loader -- 11/08/2024 Ver: 1.1 Licensed GNU GPL", ENDL, "Reading setup.bin for initialisation", ENDL, ENDL, 0
+init_msg: db "Welcome to RBL - Rouvik's Boot Loader -- 11/08/2024 Ver: 1.2 Licensed GNU GPL", ENDL, "Reading setup.bin for initialisation", ENDL, ENDL, 0
 more_setup_msg: db "Reading extra sectors...this might take some time...", ENDL, ENDL, 0
 success_msg: db "Loaded setup successfully! to 0x7E00", ENDL, ENDL, 0
 
