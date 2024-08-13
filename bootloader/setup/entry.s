@@ -17,27 +17,48 @@ entry:
     call ttyWrite
 
     cli
-    mov ax, 0          ; set segments to the beginning of program as they grow downward
-    mov ds, ax
-    mov es, ax
-    mov ss, ax
-    mov sp, 0x7E00      ; set stack pointer to 0
-    mov bp, sp
-    sti
+    mov ax, 0               ; set segments to the beginning of program as they grow downward
+    mov ds, ax  
+    mov es, ax  
+    mov ss, ax  
+    mov sp, 0x7E00          ; set stack pointer to 0
+    mov bp, sp  
+    sti 
 
     mov si, setup_a20_msg
     call ttyWrite
 
-    call EnableA20      ; Enable the A20 line for larger addressing    
+    call EnableA20          ; Enable the A20 line for larger addressing
 
-    mov si, setup_debug_msg
+    mov si, setup_gdt_msg
     call ttyWrite
+
+    call LoadGDT            ; Loads the Global Descriptor Table
+
+    cli                     ; DEBUG -- DISABLING INTERRUPT AS IT CAN CAUSE FUNNY TRIPLE ERRORS AND UNCONTROLLED FULL SYSTEM RESET
+    ; set pr (protected mode) flag in cr0 (bit 0)
+    mov eax, cr0
+    or al, 1
+    mov cr0, eax
+
+    jmp dword 08h:pmode32
 
     hlt
 
 .hlt:           ; hard halt
     jmp .hlt
 
+; 32 bit protected mode
+pmode32:
+    [bits 32]
+
+    ; MORE ON PROTECTED MODE BEGINS HERE <-----------------------
+
+.halt:
+    jmp .halt
+
+
+bits 16
 ;
 ; ttyWrite -- Writes a string to TTY
 ; Parameters:
@@ -116,8 +137,52 @@ WaitA20Output:
 
 ; GDT ---------------------------------------
 LoadGDT:
+    lgdt [g_GDTDesc]
     ret
+
+; Global descriptor table -- https://wiki.osdev.org/Global_Descriptor_Table
+g_GDT:
+    dq 0            ; first entry should be zero
+
+    ; 32-bit code segment
+    dw 0FFFFh       ; limit(0 - 15) for full 32bit range
+    dw 0            ; base (0 - 15)
+    db 0            ; base(16 - 23)
+    db 10011010b    ; access(present, ring 0, code seg, executable, dir up, readable)
+    db 11001111b    ; granularity = 4k pages, 32bit protected mode, no long mode
+    db 0            ; base (24 - 31)
+
+    ; 32-bit data segment
+    dw 0FFFFh       ; limit(0 - 15) for full 32bit range
+    dw 0            ; base (0 - 15)
+    db 0            ; base(16 - 23)
+    db 10010010b    ; access(present, ring 0, data seg, NON executable, dir up, readable)
+    db 11001111b    ; granularity = 4k pages, 32bit protected mode, no long mode
+    db 0            ; base (24 - 31)
+
+    ; 16-bit code segment
+    dw 0FFFFh       ; limit(0 - 15) for full 16bit range [note granularity = 0]
+    dw 0            ; base (0 - 15)
+    db 0            ; base(16 - 23)
+    db 10011010b    ; access(present, ring 0, code seg, executable, dir up, readable)
+    db 00001111b    ; granularity = 1b pages, 16bit protected mode, no long mode
+    db 0            ; base (24 - 31)
+
+    ; 16-bit data segment
+    dw 0FFFFh       ; limit(0 - 15) for full 16bit range [note granularity = 0]
+    dw 0            ; base (0 - 15)
+    db 0            ; base(16 - 23)
+    db 10010010b    ; access(present, ring 0, data seg, NON executable, dir up, readable)
+    db 00001111b    ; granularity = 1b pages, 16bit protected mode, no long mode
+    db 0            ; base (24 - 31)
+
+; GDT load entry
+g_GDTDesc:
+    dw g_GDTDesc - g_GDT - 1    ; size
+    dd g_GDT                    ; offset
 
 setup_memory_msg: db "Setting up system segments...", ENDL, 0
 setup_a20_msg: db "Enabling legacy A20...", ENDL, 0
+setup_gdt_msg: db "Setting up GDT and memory partitions, preparing to enter Protected mode...", ENDL, 0
+setup_pmode_msg: db "Successfully entered protected mode!", ENDL, 0
 setup_debug_msg: db "The process stops here for now... :(", ENDL, 0
