@@ -1,0 +1,76 @@
+Open Watcom Linker Version 2.0 beta Jul 17 2024 02:07:46 (64-bit)
+Copyright (c) 2002-2024 The Open Watcom Contributors. All Rights Reserved.
+Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
+Created on:       24/08/16 01:07:03
+Executable Image: ../build/kernel_out.bin
+creating a RAW Binary Image executable
+
+
+                        +------------+
+                        |   Groups   |
+                        +------------+
+
+Group                           Address              Size
+=====                           =======              ====
+
+DGROUP                          00008230             00000000
+
+
+
+                        +--------------+
+                        |   Segments   |
+                        +--------------+
+
+Segment                Class          Group          Address         Size
+=======                =====          =====          =======         ====
+
+_ENTRY                 CODE           AUTO           00008200        00000013
+_TEXT                  CODE           AUTO           00008213        0000001a
+CONST                  DATA           DGROUP         00008230        00000000
+CONST2                 DATA           DGROUP         00008230        00000000
+_DATA                  DATA           DGROUP         00008230        00000000
+
+
+                        +----------------+
+                        |   Memory Map   |
+                        +----------------+
+
+* = unreferenced symbol
++ = symbol only referenced locally
+
+Address        Symbol
+=======        ======
+
+Module: ../build/kernel/kentry.obj(asm/kentry.s)
+00008200       kentry
+Module: ../build/kernel/main.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\main.c)
+00008213       _kmain
+
+
+                        +---------------------+
+                        |   Module Segments   |
+                        +---------------------+
+
+! = 32-bit segment
+c = initialized communal data
+
+Module          Segment               Class           Address         Size
+======          =======               =====           =======         ====
+
+asm/kentry.s    _ENTRY                CODE           00008200         00000013
+C:\Users\majir\Desktop\R_OS\kernel\wat_c\main.c
+                _TEXT                 CODE           00008213  !      0000001a
+                CONST                 DATA           00008230  !      00000000
+                CONST2                DATA           00008230  !      00000000
+                _DATA                 DATA           00008230  !      00000000
+Warning! W1014: stack segment not found
+
+
+                        +-----------------------+
+                        |   Linker Statistics   |
+                        +-----------------------+
+
+Stack size:  7e00 (32256.)
+Memory size:  0030 (48.)
+Entry point address: 00008200
+Link time: 00:00.02

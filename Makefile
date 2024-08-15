@@ -1,5 +1,5 @@
 # Targets
-.PHONY: all mkdirs bootloader bootbase bootsetup kernel emu debug stub
+.PHONY: all assembly mkdirs bootloader bootbase bootsetup kernel emu debug stub
 
 # Stop printing the directories
 # MAKEFLAGS += --no-print-directory
@@ -8,10 +8,14 @@ SRC_BOOTLOADER := ./bootloader
 SRC_KERNEL := ./kernel
 BUILD := ./build
 
-all: bootloader kernel
+all: assembly bootloader kernel
+	@echo "All builds complete!"
+
+assembly:
 	dd if=/dev/zero of=$(BUILD)/main_floppy.img bs=512 count=2880
 	dd if=$(BUILD)/bootbase.bin of=$(BUILD)/main_floppy.img conv=notrunc
 	dd if=$(BUILD)/bootsetup.bin of=$(BUILD)/main_floppy.img obs=512 seek=1 conv=notrunc
+	dd if=$(BUILD)/kernel.bin of=$(BUILD)/main_floppy.img obs=512 seek=3 conv=notrunc
 	
 # Boot loader compile section -------------------
 bootloader: bootbase bootsetup
@@ -30,7 +34,7 @@ $(BUILD)/bootsetup.bin: mkdirs
 kernel: $(BUILD)/kernel.bin
 
 $(BUILD)/kernel.bin: mkdirs
-	$(MAKE) -C $(SRC_KERNEL) BUILD=$(abspath $(BUILD))
+	$(MAKE) -C $(SRC_KERNEL)
 
 # Compile other programs in ./stub folder -------
 stub:

@@ -11,24 +11,33 @@ jmp short entry
 nop
 ; boot setup table ---------------------------
 reserved_sectors: db 1      ; reserved sectors required to be loaded
+bootdrive_number: db 0      ; the boot drive number to be stored here again
+gdt_location: dd 0          ; store the dynamic GDT location here
 
 entry:
+    mov [bootdrive_number], dl  ; save the bootdrive number again
+
     mov si, setup_memory_msg
     call ttyWrite
 
     cli
     mov ax, 0               ; set segments to the beginning of program as they grow downward
-    mov ds, ax  
-    mov es, ax  
-    mov ss, ax  
+    mov ds, ax
+    mov es, ax
+    mov ss, ax
     mov sp, 0x7E00          ; set stack pointer to 0
-    mov bp, sp  
-    sti 
+    mov bp, sp
+    sti
 
     mov si, setup_a20_msg
     call ttyWrite
 
     call EnableA20          ; Enable the A20 line for larger addressing
+
+    mov si, setup_kernel_msg
+    call ttyWrite
+
+    call LoadKernel
 
     mov si, setup_gdt_msg
     call ttyWrite
@@ -41,24 +50,13 @@ entry:
     or al, 1
     mov cr0, eax
 
-    jmp dword 08h:pmode32
+    jmp dword 08h:0x8200    ; the kernel sits at 0x8200
 
     hlt
 
 .hlt:           ; hard halt
     jmp .hlt
 
-; 32 bit protected mode
-pmode32:
-    [bits 32]
-
-    ; MORE ON PROTECTED MODE BEGINS HERE <-----------------------
-
-.halt:
-    jmp .halt
-
-
-bits 16
 ;
 ; ttyWrite -- Writes a string to TTY
 ; Parameters:
@@ -82,6 +80,70 @@ ttyWrite:
 .done:
     pop bx
     pop ax
+    ret
+
+;
+; disk_reset -- Resets the disk
+; Paramaters:
+;   - dl = drive number
+;
+disk_reset:
+    push ax
+
+    stc
+    mov ah, 00h
+    int 13h
+    jc .error
+
+    pop ax
+    ret
+
+.error:
+    mov si, disk_reset_error_msg
+    call ttyWrite
+    hlt
+
+.hlt:
+    jmp .hlt
+
+;
+; disk_read
+; Parameters:
+;   - al = number of sectors to read
+;   - ch = low eight bits of cylinder number
+;   - cl [0-5] = sector number
+;   - cl [6-7] = high 2 bits of cylinder
+;   - dh = head number
+;   - dl = drive number
+;   es:bx = data buffer
+;
+disk_read:
+    push di
+
+    mov di, 3       ; number of retries
+.loop:
+    pusha
+    call disk_reset ; reset the disk
+    mov ah, 02h
+    stc
+    int 13h
+    popa
+    jnc .done
+    
+    dec di
+    or di, di
+    jnz .loop
+
+.error:
+    mov si, disk_read_error_msg
+    call ttyWrite
+    hlt
+    
+.hlt:       ; hard halt
+    jmp .hlt
+
+.done:
+    pop di
     ret
 
 ; Here we attempt to enable the A20 line to read higher addresses from CPU
@@ -135,9 +197,39 @@ WaitA20Output:
     jz WaitA20Output
     ret
 
+; KERNEL -----------------------------------
+LoadKernel:
+    push bx
+
+    mov al, 4                   ; read 4 sectors
+    mov ch, 0                   ; from cylinder 0
+    mov cl, 3                   ; sector 2
+    add cl, [reserved_sectors]  ; and the reserved sectors later
+    mov dl, [bootdrive_number]  ; from bootdrive
+    mov dh, 0                   ; with head = 0
+    mov bx, 0x8200              ; to location 0x8200
+    call disk_read
+
+    mov si, setup_kernel_loaded_msg
+    call ttyWrite
+
+    pop bx
+    ret
+
+setup_memory_msg: db "Setting up system segments...", ENDL, 0
+setup_a20_msg: db "Enabling legacy A20...", ENDL, 0
+setup_gdt_msg: db "Setting up GDT and memory partitions, preparing to enter Protected mode...", ENDL, 0
+setup_pmode_msg: db "Successfully entered protected mode!", ENDL, 0
+setup_kernel_msg: db "Loading kernel...", ENDL, 0
+setup_kernel_loaded_msg: db "Loading additional kernel sectors...this might take some time", ENDL, 0
+
+disk_read_error_msg: db "Failed to read disk after 3 tries...please reset and boot again", ENDL, 0
+disk_reset_error_msg: db "Failed to reset disk...please reboot", ENDL, 0
+
 ; GDT ---------------------------------------
 LoadGDT:
     lgdt [g_GDTDesc]
+    mov dword [gdt_location], g_GDT
     ret
 
 ; Global descriptor table -- https://wiki.osdev.org/Global_Descriptor_Table
@@ -180,9 +272,3 @@ g_GDT:
 g_GDTDesc:
     dw g_GDTDesc - g_GDT - 1    ; size
     dd g_GDT                    ; offset
-
-setup_memory_msg: db "Setting up system segments...", ENDL, 0
-setup_a20_msg: db "Enabling legacy A20...", ENDL, 0
-setup_gdt_msg: db "Setting up GDT and memory partitions, preparing to enter Protected mode...", ENDL, 0
-setup_pmode_msg: db "Successfully entered protected mode!", ENDL, 0
-setup_debug_msg: db "The process stops here for now... :(", ENDL, 0

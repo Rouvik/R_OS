@@ -55,7 +55,7 @@ start:
     mov si, success_msg         ; display success message
     call puts
 
-    mov dx, [drive_number]
+    mov dl, [drive_number]
     jmp buffer                  ; jump to buffer, setup.bin begins here
     hlt
     jmp globl_halt
