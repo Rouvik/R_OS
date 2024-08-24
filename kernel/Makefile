@@ -4,8 +4,8 @@ ASM  ?= nasm
 CC386 ?= wcc386
 LD386 ?= wlink
 
-# Flag description: 4r = 386 instruction with 486 timing, full debug, no stack check, warn all, flat memory, no obj link, quiet, C99
-CFLAGS386 ?= -4r -d3 -s -wx -ms -zl -zq -za99
+# Flag description: 4(r/s) = 386 instruction with 486 timing, full debug, no stack check, warn all, flat memory, no obj link, quiet, C99
+CFLAGS386 ?= -4s -d3 -s -wx -mf -zl -zq -za99
 
 C_SRC_DIR = ./wat_c
 ASM_SRC_DIR = ./asm
@@ -32,7 +32,7 @@ $(BUILD)/kernel/%.obj: $(C_SRC_DIR)/%.c mkdirs
 
 # Assembly build rule
 $(BUILD)/kernel/%.obj: $(ASM_SRC_DIR)/%.s mkdirs
-	$(ASM) -f obj -o $@ $<
+	$(ASM) -f coff -o $@ $<
 
 # Make sure the build directories exist before building
 mkdirs:

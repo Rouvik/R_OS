@@ -1,5 +1,5 @@
-#ifndef __STD_INT__
-#define __STD_INT__
+#ifndef __STDINT__
+#define __STDINT__
 
 // Base types
 #define uint8_t unsigned char
@@ -16,4 +16,4 @@
 #define true 1
 #define false 0
 
-#endif // __STD_INT__
+#endif // __STDINT__

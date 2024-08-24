@@ -8,10 +8,10 @@ SRC_BOOTLOADER := ./bootloader
 SRC_KERNEL := ./kernel
 BUILD := ./build
 
-all: assembly bootloader kernel
+all: assembly mkdirs
 	@echo "All builds complete!"
 
-assembly:
+assembly: bootloader kernel
 	dd if=/dev/zero of=$(BUILD)/main_floppy.img bs=512 count=2880
 	dd if=$(BUILD)/bootbase.bin of=$(BUILD)/main_floppy.img conv=notrunc
 	dd if=$(BUILD)/bootsetup.bin of=$(BUILD)/main_floppy.img obs=512 seek=1 conv=notrunc
@@ -23,17 +23,17 @@ bootloader: bootbase bootsetup
 bootbase: $(BUILD)/bootbase.bin
 bootsetup: $(BUILD)/bootsetup.bin
 
-$(BUILD)/bootbase.bin: mkdirs
+$(BUILD)/bootbase.bin:
 	$(MAKE) -C $(SRC_BOOTLOADER)/base
 
-$(BUILD)/bootsetup.bin: mkdirs
+$(BUILD)/bootsetup.bin:
 	$(MAKE) -C $(SRC_BOOTLOADER)/setup
 
 # Kernel compile section ------------------------
 
 kernel: $(BUILD)/kernel.bin
 
-$(BUILD)/kernel.bin: mkdirs
+$(BUILD)/kernel.bin:
 	$(MAKE) -C $(SRC_KERNEL)
 
 # Compile other programs in ./stub folder -------
@@ -50,7 +50,7 @@ clean:
 
 # Qemu emulation command
 emu:
-	qemu-system-i386 $(BUILD)/main_floppy.img
+	qemu-system-i386 -drive file=$(BUILD)/main_floppy.img,format=raw,if=floppy
 
 # Bochs debug command
 debug:

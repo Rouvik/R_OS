@@ -16,6 +16,5 @@ kentry:
     call _kmain
 
     hlt
-
 .hlt:
     jmp .hlt

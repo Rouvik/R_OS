@@ -2,7 +2,7 @@
 A simple monolothic OS for learning x86 barebones and how OSes work
 
 ### Version:
-1.2
+2.1 [Major changes in kernel startup!]
 
 # Sources:
 - [BIOS interrupts list](https://www.ctyme.com/intr/int.htm)

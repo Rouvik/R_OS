@@ -44,7 +44,11 @@ entry:
 
     call LoadGDT            ; Loads the Global Descriptor Table
 
+    mov esp, [0x7E05]       ; reset the stack
+    mov ebp, esp
+
     cli                     ; DEBUG -- DISABLING INTERRUPT AS IT CAN CAUSE FUNNY TRIPLE ERRORS AND UNCONTROLLED FULL SYSTEM RESET
+
     ; set pr (protected mode) flag in cr0 (bit 0)
     mov eax, cr0
     or al, 1
@@ -240,7 +244,7 @@ g_GDT:
     dw 0FFFFh       ; limit(0 - 15) for full 32bit range
     dw 0            ; base (0 - 15)
     db 0            ; base(16 - 23)
-    db 10011010b    ; access(present, ring 0, code seg, executable, dir up, readable)
+    db 10011011b    ; access(present, ring 0, code seg, executable, dir up, readable)
     db 11001111b    ; granularity = 4k pages, 32bit protected mode, no long mode
     db 0            ; base (24 - 31)
 
@@ -248,7 +252,7 @@ g_GDT:
     dw 0FFFFh       ; limit(0 - 15) for full 32bit range
     dw 0            ; base (0 - 15)
     db 0            ; base(16 - 23)
-    db 10010010b    ; access(present, ring 0, data seg, NON executable, dir up, readable)
+    db 10010011b    ; access(present, ring 0, data seg, NON executable, dir up, readable)
     db 11001111b    ; granularity = 4k pages, 32bit protected mode, no long mode
     db 0            ; base (24 - 31)
 
@@ -256,7 +260,7 @@ g_GDT:
     dw 0FFFFh       ; limit(0 - 15) for full 16bit range [note granularity = 0]
     dw 0            ; base (0 - 15)
     db 0            ; base(16 - 23)
-    db 10011010b    ; access(present, ring 0, code seg, executable, dir up, readable)
+    db 10011011b    ; access(present, ring 0, code seg, executable, dir up, readable)
     db 00001111b    ; granularity = 1b pages, 16bit protected mode, no long mode
     db 0            ; base (24 - 31)
 
@@ -264,7 +268,7 @@ g_GDT:
     dw 0FFFFh       ; limit(0 - 15) for full 16bit range [note granularity = 0]
     dw 0            ; base (0 - 15)
     db 0            ; base(16 - 23)
-    db 10010010b    ; access(present, ring 0, data seg, NON executable, dir up, readable)
+    db 10010011b    ; access(present, ring 0, data seg, NON executable, dir up, readable)
     db 00001111b    ; granularity = 1b pages, 16bit protected mode, no long mode
     db 0            ; base (24 - 31)
 
