@@ -1,7 +1,7 @@
 Open Watcom Linker Version 2.0 beta Jul 17 2024 02:07:46 (64-bit)
 Copyright (c) 2002-2024 The Open Watcom Contributors. All Rights Reserved.
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       24/08/25 03:34:33
+Created on:       24/08/26 19:14:46
 Executable Image: ../build/kernel_out.bin
 creating a RAW Binary Image executable
 
@@ -13,7 +13,7 @@ creating a RAW Binary Image executable
 Group                           Address              Size
 =====                           =======              ====
 
-DGROUP                          0000826c             0000005c
+DGROUP                          000082b8             00000024
 
 
 
@@ -24,10 +24,11 @@ DGROUP                          0000826c             0000005c
 Segment                Class          Group          Address         Size
 =======                =====          =====          =======         ====
 
-_TEXT                  CODE           AUTO           00008200        0000006b
-CONST                  DATA           DGROUP         0000826c        00000051
-CONST2                 DATA           DGROUP         000082c0        00000000
-_DATA                  DATA           DGROUP         000082c0        00000008
+_ENTRY                 CODE           AUTO           00008200        00000018
+_TEXT                  CODE           AUTO           00008218        0000009f
+CONST                  DATA           DGROUP         000082b8        00000019
+CONST2                 DATA           DGROUP         000082d4        00000000
+_DATA                  DATA           DGROUP         000082d4        00000008
 
 
                         +----------------+
@@ -40,10 +41,14 @@ _DATA                  DATA           DGROUP         000082c0        00000008
 Address        Symbol
 =======        ======
 
+Module: ../build/kernel/kentry.obj(../build/kernel/kentry.obj)
+00008200       kentry
 Module: ../build/kernel/main.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\main.c)
-00008200       _kmain
-000082c0+      video_Buffer
-000082c4+      loc
+00008218*      putc
+00008243+      puts
+0000828f       _kmain
+000082d4+      video_Buffer
+000082d8+      loc
 
 
                         +---------------------+
@@ -56,11 +61,13 @@ c = initialized communal data
 Module          Segment               Class           Address         Size
 ======          =======               =====           =======         ====
 
+../build/kernel/kentry.obj
+                _ENTRY                CODE           00008200  !      00000018
 C:\Users\majir\Desktop\R_OS\kernel\wat_c\main.c
-                _TEXT                 CODE           00008200  !      0000006b
-                CONST                 DATA           0000826c  !      00000051
-                CONST2                DATA           000082c0  !      00000000
-                _DATA                 DATA           000082c0  !      00000008
+                _TEXT                 CODE           00008218  !      0000009f
+                CONST                 DATA           000082b8  !      00000019
+                CONST2                DATA           000082d4  !      00000000
+                _DATA                 DATA           000082d4  !      00000008
 Warning! W1014: stack segment not found
 
 
@@ -69,6 +76,6 @@ Warning! W1014: stack segment not found
                         +-----------------------+
 
 Stack size:  7e00 (32256.)
-Memory size:  00c8 (200.)
+Memory size:  00dc (220.)
 Entry point address: 00008200
-Link time: 00:00.01
+Link time: 00:00.05

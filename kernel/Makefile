@@ -32,7 +32,7 @@ $(BUILD)/kernel/%.obj: $(C_SRC_DIR)/%.c mkdirs
 
 # Assembly build rule
 $(BUILD)/kernel/%.obj: $(ASM_SRC_DIR)/%.s mkdirs
-	$(ASM) -f coff -o $@ $<
+	$(ASM) -f win32 -o $@ $<
 
 # Make sure the build directories exist before building
 mkdirs:
