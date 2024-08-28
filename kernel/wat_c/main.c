@@ -1,18 +1,18 @@
 #include "include/stdint.h"
-#include "include/stdio.h"
+#include "drivers/tty.h"
 
 int _cdecl kmain()
 {
-    // video_Buffer[0] = x;
+    scr_colorMode = COLOR(BLACK, BLACK);
+    clearTTY();
+    scr_colorMode = COLOR(BLACK, WHITE);
+    puts("Welcome to RKernel Version 1.0 (alpha)\n\r"
+                "This message is written from RKernel TTY driver\n\r"
+                "If you see any errors...please restart the OS or contact developer\n\r\n"
+                "The support command line utility and rest of the drivers are work in progress...\n\r\n");
 
-    // char *msg = "                            Hello world from kernel!                            ";
-    // for (char *i = msg; *i != 0; i++)
-    // {
-    //     video_Buffer[loc++] = *i;
-    //     video_Buffer[loc++] = 12;
-    // }
-
-    puts("Hello world from kernel!");
+    scr_colorMode = COLOR(BLACK, LIGHT_GREEN);
+    puts("Created/Last Updated by Rouvik Maji 28/08/2024 -- 6:05PM IST\n\r");
 
     while (true);
 }

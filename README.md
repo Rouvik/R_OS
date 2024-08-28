@@ -2,7 +2,7 @@
 A simple monolothic OS for learning x86 barebones and how OSes work
 
 ### Version:
-2.1 [Major changes in kernel startup!]
+2.2 [Major changes in kernel startup!]
 
 # Sources:
 - [BIOS interrupts list](https://www.ctyme.com/intr/int.htm)
@@ -13,7 +13,8 @@ A simple monolothic OS for learning x86 barebones and how OSes work
 # Features:
 - Not much, presently only bootbase.bin (first boot sector code) is finished and successfully reads and loads bootsetup.bin from
 memory for execution and executes it
-- bootsetup.bin, is in an intermediate step and does nothing special yet
+- bootsetup.bin, is in an intermediate step and it loads the kernel(4 sectors wide), enables A20, sets up GDT, and jumps to 32 bit protected mode kernel
+- kernel.bin: Presently contains only a TTY driver for the project and writes some basic info and loads into kernel
 
 # How to use?
 ## Requirements:

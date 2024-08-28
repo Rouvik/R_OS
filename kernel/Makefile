@@ -10,7 +10,7 @@ CFLAGS386 ?= -4s -d3 -s -wx -mf -zl -zq -za99
 C_SRC_DIR = ./wat_c
 ASM_SRC_DIR = ./asm
 
-C_TARGETS = $(wildcard $(C_SRC_DIR)/*.c)
+C_TARGETS = $(wildcard $(C_SRC_DIR)/*.c) $(wildcard $(C_SRC_DIR)/drivers/*.c)
 ASM_TARGETS = $(wildcard $(ASM_SRC_DIR)/*.s)
 
 C_OBJECTS = $(patsubst $(C_SRC_DIR)/%.c, $(BUILD)/kernel/%.obj, $(C_TARGETS))
@@ -37,6 +37,7 @@ $(BUILD)/kernel/%.obj: $(ASM_SRC_DIR)/%.s mkdirs
 # Make sure the build directories exist before building
 mkdirs:
 	mkdir -p $(BUILD)/kernel
+	mkdir -p $(BUILD)/kernel/drivers
 
 clean:
 	rm $(BUILD)/kernel.bin
