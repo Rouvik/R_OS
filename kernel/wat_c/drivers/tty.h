@@ -64,7 +64,7 @@ void mputc(uint8_t x, uint8_t y, char ch);
  *
  * @param msg The string to print
  */
-void puts(const char *msg);
+uint32_t puts(const char *msg);
 
 /**
  * @brief Moves the cursor to x, y and prints the string
@@ -73,7 +73,7 @@ void puts(const char *msg);
  * @param y The y position on screen
  * @param msg The string to print to screen
  */
-void mputs(uint8_t x, uint8_t y, const char *msg);
+uint32_t mputs(uint8_t x, uint8_t y, const char *msg);
 
 /**
  * @brief Sets position and color details of the cursor

@@ -44,29 +44,34 @@ void putc(char ch)
     {
     case '\n':
         scr_Y++;
-        break;
+        return;     // get out of the function straight
 
+    case '\r':
+        scr_X = 0;
+        return;     // get out of the function straight
+    
     case '\t':
         for (uint8_t i = 0; i < 4 - (scr_X % 4); i++)
         {
             video_Buffer[TEMP_TTY_POS(scr_X, scr_Y)] = ' ';
             video_Buffer[TEMP_TTY_POS(scr_X, scr_Y) + 1] = scr_colorMode;
+            if (++scr_X > SCREEN_WIDTH)
+            {
+                scr_X = 0;
+                scr_Y++;
+            }
         }
-        break;
-
-    case '\r':
-        scr_X = 0;
-        break;
+        return;     // get out of the function straight
 
     default:
         video_Buffer[TEMP_TTY_POS(scr_X, scr_Y)] = ch;
         video_Buffer[TEMP_TTY_POS(scr_X, scr_Y) + 1] = scr_colorMode;
-    }
 
-    if (++scr_X > SCREEN_WIDTH)
-    {
-        scr_X = 0;
-        scr_Y++;
+        if (++scr_X > SCREEN_WIDTH)
+        {
+            scr_X = 0;
+            scr_Y++;
+        }
     }
 }
 
@@ -77,51 +82,24 @@ void mputc(uint8_t x, uint8_t y, char ch)
     putc(ch);
 }
 
-void puts(const char *msg)
+uint32_t puts(const char *msg)
 {
+    uint32_t charsPrinted = 0;
     for (char *i = (char *)msg; *i != 0; i++)
     {
-        switch (*i)
-        {
-        case '\n':
-            scr_Y++;
-            break;
-
-        case '\t':
-            for (uint8_t i = 0; i < 4 - (scr_X % 4); i++)
-            {
-                video_Buffer[TEMP_TTY_POS(scr_X, scr_Y)] = ' ';
-                video_Buffer[TEMP_TTY_POS(scr_X, scr_Y) + 1] = scr_colorMode;
-                if (++scr_X > SCREEN_WIDTH)
-                {
-                    scr_X = 0;
-                    scr_Y++;
-                }
-            }
-            break;
-
-        case '\r':
-            scr_X = 0;
-            break;
-
-        default:
-            video_Buffer[TEMP_TTY_POS(scr_X, scr_Y)] = *i;
-            video_Buffer[TEMP_TTY_POS(scr_X, scr_Y) + 1] = scr_colorMode;
-            if (++scr_X > SCREEN_WIDTH)
-            {
-                scr_X = 0;
-                scr_Y++;
-            }
-        }
+        charsPrinted++;
+        putc(*i);
     }
+
+    return charsPrinted;
 }
 
-void mputs(uint8_t x, uint8_t y, const char *msg)
+uint32_t mputs(uint8_t x, uint8_t y, const char *msg)
 {
     scr_X = x % SCREEN_WIDTH;
     scr_Y = y % SCREEN_HEIGHT;
 
-    puts(msg);
+    return puts(msg);
 }
 
 void setCur(uint8_t x, uint8_t y, uint8_t color)

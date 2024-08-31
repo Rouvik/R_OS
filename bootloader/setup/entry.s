@@ -31,6 +31,7 @@ nop
 reserved_sectors: db 1      ; reserved sectors required to be loaded
 bootdrive_number: db 0      ; the boot drive number to be stored here again
 gdt_location: dd 0          ; store the dynamic GDT location here
+memtable_size: db 0         ; store the Memory Map size here (the number of elements)
 
 entry:
     mov [bootdrive_number], dl  ; save the bootdrive number again
@@ -39,18 +40,24 @@ entry:
     call ttyWrite
 
     cli
-    mov ax, 0               ; set segments to the beginning of program as they grow downward
+    mov ax, 0                           ; set segments to the beginning of program as they grow downward
     mov ds, ax
     mov es, ax
     mov ss, ax
-    mov sp, 0x7E00          ; set stack pointer to 0
+    mov sp, 0x7E00                      ; set stack pointer to 0
     mov bp, sp
     sti
 
     mov si, setup_a20_msg
     call ttyWrite
 
-    call EnableA20          ; Enable the A20 line for larger addressing
+    call EnableA20                      ; Enable the A20 line for larger addressing
+    
+    mov si, setup_gen_memory_table_msg  ; Get the system available memory map
+    call ttyWrite
+
+    mov di, 0x8200                      ; Write to location 0x8200
+    call gen_memory_table
 
     mov si, setup_kernel_msg
     call ttyWrite
@@ -60,23 +67,23 @@ entry:
     mov si, setup_gdt_msg
     call ttyWrite
 
-    call LoadGDT            ; Loads the Global Descriptor Table
+    call LoadGDT                        ; Loads the Global Descriptor Table
 
-    mov esp, [0x7E05]       ; reset the stack
+    mov esp, [0x7E05]                   ; reset the stack
     mov ebp, esp
 
-    cli                     ; DEBUG -- DISABLING INTERRUPT AS IT CAN CAUSE FUNNY TRIPLE ERRORS AND UNCONTROLLED FULL SYSTEM RESET
+    cli                                 ; DEBUG -- DISABLING INTERRUPT AS IT CAN CAUSE FUNNY TRIPLE ERRORS AND UNCONTROLLED FULL SYSTEM RESET
 
     ; set pr (protected mode) flag in cr0 (bit 0)
     mov eax, cr0
     or al, 1
     mov cr0, eax
 
-    jmp dword 08h:0x8200    ; the kernel sits at 0x8200
+    jmp dword 08h:0x8300                ; the kernel sits at 0x8300
 
     hlt
 
-.hlt:           ; hard halt
+.hlt:                                   ; hard halt
     jmp .hlt
 
 ;
@@ -219,17 +226,72 @@ WaitA20Output:
     jz WaitA20Output
     ret
 
+;
+; gen_memory_table - Finds and writes a memory table for available extended memory in 0x8200
+; Parameters:
+;   - di = buffer pointer for result
+;   - ecx = Size of buffer for result
+; Returns:
+;   - ecx = Actual length returned in bytes
+;
+gen_memory_table:
+    push eax
+    push ebx
+    push ecx
+    push edx
+    push si
+
+    mov edx, 534D4150h      ; SMAP key
+    xor ebx, ebx            ; ebx = 0
+    clc                     ; clear carry before call
+    xor si, si              ; si = 0
+
+.loop:
+    mov eax, 0000E820h      ; BIOS Get System Memory Map command
+    mov ecx, 24             ; Read in 24 byte chunks ACPI 3.0
+    int 15h
+    jc .error
+    inc si                  ; increment si per valid list element
+    add di, 24              ; Increment the location to copy more
+    or ebx, ebx
+    jnz .loop
+
+.done:
+    mov [memtable_size], si ; Write the number of elements to memtable_size
+    mov si, setup_gen_memory_table_success_msg
+    call ttyWrite
+
+    pop si
+    pop edx
+    pop ecx
+    pop ebx
+    pop eax
+    ret
+
+.error:
+    cmp ah, 86h
+    jz .unsupported
+    mov si, setup_gen_memory_table_error_msg
+    call ttyWrite
+
+.unsupported:
+    mov si, setup_gen_memory_table_unsupported_error_msg
+    call ttyWrite
+
+.hlt:           ; hard halt
+    jmp .hlt
+
 ; KERNEL -----------------------------------
 LoadKernel:
     push bx
 
-    mov al, 4                   ; read 4 sectors
+    mov al, 6                   ; read 6 sectors
     mov ch, 0                   ; from cylinder 0
-    mov cl, 3                   ; sector 2
+    mov cl, 3                   ; sector 3
     add cl, [reserved_sectors]  ; and the reserved sectors later
     mov dl, [bootdrive_number]  ; from bootdrive
     mov dh, 0                   ; with head = 0
-    mov bx, 0x8200              ; to location 0x8200
+    mov bx, 0x8300              ; to location 0x8300
     call disk_read
 
     mov si, setup_kernel_loaded_msg
@@ -238,8 +300,13 @@ LoadKernel:
     pop bx
     ret
 
+; TTY messages
 setup_memory_msg: db "Setting up system segments...", ENDL, 0
 setup_a20_msg: db "Enabling legacy A20...", ENDL, 0
+setup_gen_memory_table_msg: db "Detecting system memory map...", ENDL, 0
+setup_gen_memory_table_error_msg: db "Failed to load system memory map", ENDL, 0
+setup_gen_memory_table_unsupported_error_msg: db "Error, memory mapping is unsupported in this system", ENDL, 0
+setup_gen_memory_table_success_msg: db "System memory map loaded at 0x8200", ENDL, 0
 setup_gdt_msg: db "Setting up GDT and memory partitions, preparing to enter Protected mode...", ENDL, 0
 setup_pmode_msg: db "Successfully entered protected mode!", ENDL, 0
 setup_kernel_msg: db "Loading kernel...", ENDL, 0

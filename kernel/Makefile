@@ -19,7 +19,7 @@ ASM_OBJECTS = $(patsubst $(ASM_SRC_DIR)/%.s, $(BUILD)/kernel/%.obj, $(ASM_TARGET
 .PHONY: all build mkdirs clean
 
 all: build mkdirs
-	dd if=/dev/zero of=$(BUILD)/kernel.bin bs=512 count=4
+	dd if=/dev/zero of=$(BUILD)/kernel.bin bs=512 count=6
 	dd if=$(BUILD)/kernel_out.bin of=$(BUILD)/kernel.bin conv=notrunc
 	rm $(BUILD)/kernel_out.bin
 
