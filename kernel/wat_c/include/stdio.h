@@ -24,6 +24,12 @@
 #include "../drivers/tty.h"
 #include "include/x86_inc.h"
 
+/**
+ * @brief Prints a 32 bit number to stdout
+ * 
+ * @param x The number to print to stdout
+ * @return int The number of characters printed
+ */
 int printInt(int x)
 {
     if (!x)             // if the number is zero
@@ -45,6 +51,12 @@ int printInt(int x)
     return 10 - i - 2;
 }
 
+/**
+ * @brief Prints a 64 bit number to stdout
+ * 
+ * @param x The number to print to stdout
+ * @return int The number of characters printed
+ */
 int printLongInt(uint64_t x)
 {
     if (!x)                 // if the number is zero
@@ -69,6 +81,12 @@ int printLongInt(uint64_t x)
     return 20 - i - 2;
 }
 
+/**
+ * @brief Prints a 32bit number in hex to stdout
+ * 
+ * @param ptr The number to print to stdout, this function is mainly suited for printing pointers thus the naming
+ * @return int The number of characters printed to stdout
+ */
 int printHexInt(uint32_t ptr)
 {
     if (!ptr)
@@ -101,6 +119,22 @@ int printHexInt(uint32_t ptr)
     return 8 - i;               // no -2 since we are also printing the preceding "0x"
 }
 
+/**
+ * @brief Prints in C style formatting to stdout, presently TTY driver stdout
+ * 
+ * @param fmt The format string to refer to while printing @n
+ *            Available formats:
+ *              - %s = String
+ *              - %d = 32 bit or smaller unsigned integers
+ *              - %ld = 64 bit or smaller unsigned integers
+ *              - %c = Charaters
+ *              - %p = Pointers (hex print)
+ *              - %x = Hexadecimal numbers
+ *              - %% = escape sequence for '%' character
+ * 
+ * @param ... variadic input arguments
+ * @return int The number of characters printed to stdout
+ */
 int _cdecl printf(const char *fmt, ...)
 {
     uint32_t *argp = (uint32_t *)&fmt;
