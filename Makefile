@@ -50,7 +50,7 @@ clean:
 
 # Qemu emulation command
 emu:
-	qemu-system-i386 -drive file=$(BUILD)/main_floppy.img,format=raw,if=floppy
+	qemu-system-i386 -drive file=$(BUILD)/main_floppy.img,format=raw,if=ide
 
 # Bochs debug command
 debug:

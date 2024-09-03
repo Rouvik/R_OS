@@ -22,9 +22,16 @@
 
 #include "stdint.h"
 #include "../drivers/tty.h"
+#include "include/x86_inc.h"
 
 int printInt(int x)
 {
+    if (!x)             // if the number is zero
+    {
+        putc('0');
+        return 1;
+    }
+    
     char numStr[10] = {0};
     int i = 8;
     while (x > 0)
@@ -38,24 +45,38 @@ int printInt(int x)
     return 10 - i - 2;
 }
 
-// <<<PRESENTLY BROKEN>>>
-// int printLongInt(uint64_t x)
-// {
-//     char numStr[20] = {0};
-//     int i = 18;
-//     while (x > 0)
-//     {
-//         numStr[i--] = '0' + (x % 10);
-//         x /= 10;
-//     }
-
-//     puts(numStr + i + 1);
+int printLongInt(uint64_t x)
+{
+    if (!x)                 // if the number is zero
+    {
+        putc('0');
+        return 1;
+    }
     
-//     return 20 - i - 2;
-// }
+    char numStr[20] = {0};
+    int i = 18;
+    while (x > 0)
+    {
+        uint32_t rem;
+        x86_div_u64(x, 10, &x, &rem);
+        numStr[i--] = '0' + rem;
+    }
+
+    puts(numStr + i + 1);
+    
+    return 0;
+
+    return 20 - i - 2;
+}
 
 int printHexInt(uint32_t ptr)
 {
+    if (!ptr)
+    {
+        puts("0x00");
+        return 4;
+    }
+    
     char hexStr[8] = {0};
     int i = 6;
 
@@ -77,7 +98,7 @@ int printHexInt(uint32_t ptr)
     puts("0x");
     puts(hexStr + i + 1);
     
-    return 8 - i - 2;
+    return 8 - i;               // no -2 since we are also printing the preceding "0x"
 }
 
 int _cdecl printf(const char *fmt, ...)
@@ -103,11 +124,16 @@ int _cdecl printf(const char *fmt, ...)
                 argp++;
                 break;
 
-            // <<<BROKEN CODE>>>
-            // case 'l':
-            //     charsPrinted += printLongInt(*argp);
-            //     argp += 2;              // since it's a long int and will consume 2 32 bit spaces
-            //     break;
+            case 'l':
+                i++;                    // also consume the suceeding d as per the printing format
+                if (*(i + 1) != 'd')
+                {
+                    break;
+                }
+                
+                charsPrinted += printLongInt((uint64_t)(*argp));
+                argp += 2;              // since it's a long int and will consume 2 32 bit spaces
+                break;
 
             case 'c':
                 putc((char)*argp);
