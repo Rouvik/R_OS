@@ -1,6 +1,10 @@
 # R_OS
 A simple monolothic OS for learning x86 barebones and how OSes work
 
+## Notes to self:
+Don't forget to use `make -B` when building the entire project,
+bad makefile build rules might skip building important files for compilation
+
 ### Version:
 2.2 [Major changes in kernel startup!]
 

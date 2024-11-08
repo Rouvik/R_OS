@@ -2,6 +2,7 @@ bits 32
 
 section _TEXT class=CODE
 global _x86_div_u64
+global _x86_IDT_Load
 
 ;
 ; _x86_div_u64 - Divides a 64 bit number by another 64 bit number
@@ -56,4 +57,12 @@ _x86_div_u64:
     pop ebp
     ret
 
-
+;
+; _x86_IDT_Load - Loads the interrupt descriptor to the system IDTR
+; Function signature: void _cdecl x86_IDT_Load(IDTDesciptor_t *idtDescriptor)
+; Parameters:
+;   - IDTDescriptor = ebp + 8 (4 byte address)
+;
+_x86_IDT_Load:
+    lidt [ebp + 8]
+    ret

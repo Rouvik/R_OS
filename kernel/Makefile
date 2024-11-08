@@ -38,6 +38,7 @@ $(BUILD)/kernel/%.obj: $(ASM_SRC_DIR)/%.s mkdirs
 mkdirs:
 	mkdir -p $(BUILD)/kernel
 	mkdir -p $(BUILD)/kernel/drivers
+	mkdir -p $(BUILD)/kernel/system
 
 clean:
 	rm $(BUILD)/kernel.bin

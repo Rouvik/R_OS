@@ -3,24 +3,23 @@
 #include "include/stdio.h"
 #include "include/x86_inc.h"
 
+typedef struct memEntry
+{
+    uint64_t baseAddr;
+    uint64_t length;
+    uint32_t type;
+    uint32_t extAttr;
+} memEntry_t;
+
 void readMemory()
 {
     uint8_t *elemsPtr = 0x7E09;
-    uint64_t *addp = 0x8200;
+    memEntry_t *addp = 0x8200;
 
     for (int i = 0; i < *elemsPtr; i++)
     {
-        uint64_t baseAddr = *addp;
+        printf("Base Address: %ld Length: %ld Type: %d Extended Attribute: %d\r\n", addp->baseAddr, addp->length, addp->type, addp->extAttr);
         addp++;
-        uint64_t lengthPtr = *addp;
-        addp++;
-        uint64_t typeAndExtAttr = *addp;
-        addp++;
-
-        uint32_t type = 0x00000000FFFFFFFF & typeAndExtAttr;
-        uint32_t extAttr = 0xFFFFFFFF00000000 & typeAndExtAttr;
-
-        printf("Base Address: %ld Length: %ld Type: %d Extended Attribute: %d\r\n", baseAddr, lengthPtr, type, extAttr);
     }
 }
 
@@ -41,10 +40,11 @@ int _cdecl kmain()
     // puts("Note to self: The memory table is stored at 0x8200 and its size(number of 24 bit elements) at 0x7e09\n\r");
 
     scr_colorMode = COLOR(BLACK, CYAN);
-
+    
     puts("\nMemory map:\r\n");
 
     readMemory();       // print the system memory map
+
 
     while (true);
 }

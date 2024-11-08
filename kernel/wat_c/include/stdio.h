@@ -176,10 +176,6 @@ int _cdecl printf(const char *fmt, ...)
                 break;
 
             case 'p':
-                charsPrinted += printHexInt(*argp);
-                argp++;
-                break;
-
             case 'x':
                 charsPrinted += printHexInt(*argp);
                 argp++;

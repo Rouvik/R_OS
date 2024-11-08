@@ -1,7 +1,7 @@
 Open Watcom Linker Version 2.0 beta Jul 17 2024 02:07:46 (64-bit)
 Copyright (c) 2002-2024 The Open Watcom Contributors. All Rights Reserved.
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       24/09/04 02:06:36
+Created on:       24/11/08 14:03:43
 Warning! W1027: file ../build/kernel/drivers/tty.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\drivers\tty.c): redefinition of SCREEN_WIDTH ignored
 Warning! W1027: file ../build/kernel/drivers/tty.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\drivers\tty.c): redefinition of SCREEN_HEIGHT ignored
 Executable Image: ../build/kernel_out.bin
@@ -15,7 +15,7 @@ creating a RAW Binary Image executable
 Group                           Address              Size
 =====                           =======              ====
 
-DGROUP                          00008c78             0000019f
+DGROUP                          00008c14             0000019f
 
 
 
@@ -27,10 +27,10 @@ Segment                Class          Group          Address         Size
 =======                =====          =====          =======         ====
 
 _ENTRY                 CODE           AUTO           00008300        00000018
-_TEXT                  CODE           AUTO           00008320        00000958
-CONST                  DATA           DGROUP         00008c78        00000187
-CONST2                 DATA           DGROUP         00008e00        00000010
-_DATA                  DATA           DGROUP         00008e10        00000007
+_TEXT                  CODE           AUTO           00008320        000008f2
+CONST                  DATA           DGROUP         00008c14        00000187
+CONST2                 DATA           DGROUP         00008d9c        00000010
+_DATA                  DATA           DGROUP         00008dac        00000007
 
 
                         +----------------+
@@ -47,29 +47,30 @@ Module: ../build/kernel/kentry.obj(../build/kernel/kentry.obj)
 00008300       kentry
 Module: ../build/kernel/x86.obj(../build/kernel/x86.obj)
 00008320       _x86_div_u64
+0000835d*      _x86_IDT_Load
 Module: ../build/kernel/main.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\main.c)
-00008383+      printInt
-00008432+      printLongInt
-000084fd+      printHexInt
-000085cf+      _printf
-000087a3+      readMemory
-00008872       _kmain
-00008e00       SCREEN_WIDTH
-00008e04       SCREEN_HEIGHT
+00008388+      printInt
+00008437+      printLongInt
+00008502+      printHexInt
+000085d4+      _printf
+0000878c+      readMemory
+0000880c       _kmain
+00008d9c       SCREEN_WIDTH
+00008da0       SCREEN_HEIGHT
 Module: ../build/kernel/drivers/tty.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\drivers\tty.c)
-000088dc       clearTTY
-00008934       putc
-00008ac5*      mputc
-00008b0c       puts
-00008b67*      mputs
-00008bb2*      setCur
-00008bf3*      setPos
-00008c2c*      setX
-00008c52*      setY
-00008e10+      video_Buffer
-00008e14+      scr_X
-00008e15+      scr_Y
-00008e16       scr_colorMode
+00008876       clearTTY
+000088ce       putc
+00008a5f*      mputc
+00008aa6       puts
+00008b01*      mputs
+00008b4c*      setCur
+00008b8d*      setPos
+00008bc6*      setX
+00008bec*      setY
+00008dac+      video_Buffer
+00008db0+      scr_X
+00008db1+      scr_Y
+00008db2       scr_colorMode
 
 
                         +---------------------+
@@ -85,17 +86,17 @@ Module          Segment               Class           Address         Size
 ../build/kernel/kentry.obj
                 _ENTRY                CODE           00008300  !      00000018
 ../build/kernel/x86.obj
-                _TEXT                 CODE           00008320  !      0000003d
+                _TEXT                 CODE           00008320  !      00000042
 C:\Users\majir\Desktop\R_OS\kernel\wat_c\main.c
-                _TEXT                 CODE           0000835d  !      0000057f
-                CONST                 DATA           00008c78  !      00000187
-                CONST2                DATA           00008e00  !      00000008
-                _DATA                 DATA           00008e10  !      00000000
+                _TEXT                 CODE           00008362  !      00000514
+                CONST                 DATA           00008c14  !      00000187
+                CONST2                DATA           00008d9c  !      00000008
+                _DATA                 DATA           00008dac  !      00000000
 C:\Users\majir\Desktop\R_OS\kernel\wat_c\drivers\tty.c
-                _TEXT                 CODE           000088dc  !      0000039c
-                CONST                 DATA           00008e00  !      00000000
-                CONST2                DATA           00008e08  !      00000008
-                _DATA                 DATA           00008e10  !      00000007
+                _TEXT                 CODE           00008876  !      0000039c
+                CONST                 DATA           00008d9c  !      00000000
+                CONST2                DATA           00008da4  !      00000008
+                _DATA                 DATA           00008dac  !      00000007
 Warning! W1014: stack segment not found
 
 
@@ -104,6 +105,6 @@ Warning! W1014: stack segment not found
                         +-----------------------+
 
 Stack size:  7e00 (32256.)
-Memory size:  0b17 (2839.)
+Memory size:  0ab3 (2739.)
 Entry point address: 00008300
 Link time: 00:00.02
