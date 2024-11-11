@@ -22,7 +22,7 @@
 
 #include "stdint.h"
 #include "../drivers/tty.h"
-#include "include/x86_inc.h"
+#include "x86_inc.h"
 
 /**
  * @brief Prints a 32 bit number to stdout

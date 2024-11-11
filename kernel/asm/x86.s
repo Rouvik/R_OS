@@ -64,5 +64,15 @@ _x86_div_u64:
 ;   - IDTDescriptor = ebp + 8 (4 byte address)
 ;
 _x86_IDT_Load:
-    lidt [ebp + 8]
+    push ebp
+    mov ebp, esp
+
+    push eax
+
+    mov eax, [ebp + 8]  ; get the pointer to IDT Descriptor
+
+    lidt [eax]          ; get the actual IDT Descriptor
+
+    pop eax             ; restore regs and stack
+    pop ebp
     ret

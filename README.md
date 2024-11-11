@@ -5,6 +5,9 @@ A simple monolothic OS for learning x86 barebones and how OSes work
 Don't forget to use `make -B` when building the entire project,
 bad makefile build rules might skip building important files for compilation
 
+Also the file `kernel\asm\isr_gen.inc.txt` is named so with a .txt to prevent the nasm linter from checking its errors, the problems tab
+goes crazy with 512 errors!
+
 ### Version:
 2.2 [Major changes in kernel startup!]
 

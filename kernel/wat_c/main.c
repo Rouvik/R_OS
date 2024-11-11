@@ -2,6 +2,8 @@
 #include "drivers/tty.h"
 #include "include/stdio.h"
 #include "include/x86_inc.h"
+#include "./system/idt.h"
+#include "./system/isr.h"
 
 typedef struct memEntry
 {
@@ -13,8 +15,8 @@ typedef struct memEntry
 
 void readMemory()
 {
-    uint8_t *elemsPtr = 0x7E09;
-    memEntry_t *addp = 0x8200;
+    uint8_t *elemsPtr = (uint8_t *)0x7E09;
+    memEntry_t *addp = (memEntry_t *)0x8200;
 
     for (int i = 0; i < *elemsPtr; i++)
     {
@@ -45,6 +47,14 @@ int _cdecl kmain()
 
     readMemory();       // print the system memory map
 
+    putc('\n');
 
-    while (true);
+    ISR_Initialise();   // initialise the interrupt table
+    IDT_LoadIDTTable(); // load the interrupt table to idtr
+
+    __asm {             // calling an interrupt
+        int 2
+    };
+
+    while (true);       // halt
 }

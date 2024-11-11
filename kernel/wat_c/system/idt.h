@@ -3,6 +3,8 @@
 
 #include "../include/stdint.h"
 
+#pragma pack(1) // alternative to __atribute((packed)) in open watcom
+
 typedef struct IDTEntry
 {
     uint16_t baseLow;
@@ -10,13 +12,15 @@ typedef struct IDTEntry
     uint8_t reserved;
     uint8_t flags;
     uint16_t baseHigh;
-} _Packed IDTEntry_t;
+} IDTEntry_t;
 
 typedef struct IDTDesciptor
 {
     uint16_t limit;
     IDTEntry_t *ptr;
-} _Packed IDTDesciptor_t;
+} IDTDesciptor_t;
+
+#pragma pack() // reset packing
 
 typedef enum {
     IDT_FLAG_TASK_GATE = 0x5,
@@ -32,8 +36,10 @@ typedef enum {
     IDT_FLAG_PRESENT = 0x80
 } IDT_FLAGS;
 
-void IDT_SetGate(int interrupt, void *base, uint16_t segmentDescriptor, uint8_t flags);
+void IDT_SetGate(int interrupt_num, void *base, uint16_t segmentDescriptor, uint8_t flags);
 
-void IDT_EnableGate(int interrupt, bool enable);
+void IDT_EnableGate(int interrupt_num, bool enable);
+
+void IDT_LoadIDTTable();
 
 #endif // __IDT__

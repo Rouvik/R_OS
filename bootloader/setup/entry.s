@@ -285,13 +285,13 @@ gen_memory_table:
 LoadKernel:
     push bx
 
-    mov al, 6                   ; read 6 sectors
-    mov ch, 0                   ; from cylinder 0
-    mov cl, 3                   ; sector 3
-    add cl, [reserved_sectors]  ; and the reserved sectors later
-    mov dl, [bootdrive_number]  ; from bootdrive
-    mov dh, 0                   ; with head = 0
-    mov bx, 0x8300              ; to location 0x8300
+    mov al, 31                      ; read 31 sectors
+    mov ch, 0                       ; from cylinder 0
+    mov cl, 3                       ; sector 3
+    add cl, [reserved_sectors]      ; and the reserved sectors later
+    mov dl, [bootdrive_number]      ; from bootdrive
+    mov dh, 0                       ; with head = 0
+    mov bx, 0x8300                  ; to location 0x8300
     call disk_read
 
     mov si, setup_kernel_loaded_msg
