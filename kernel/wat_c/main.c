@@ -2,8 +2,8 @@
 #include "drivers/tty.h"
 #include "include/stdio.h"
 #include "include/x86_inc.h"
-#include "./system/idt.h"
-#include "./system/isr.h"
+#include "./interrupts/idt.h"
+#include "./interrupts/isr.h"
 
 typedef struct memEntry
 {
@@ -36,7 +36,7 @@ int _cdecl kmain()
                 "The support command line utility and rest of the drivers are work in progress...\n\r\n");
 
     scr_colorMode = COLOR(BLACK, LIGHT_GREEN);
-    puts("Created/Last Updated by Rouvik Maji 4/09/2024 -- 2:05PM IST\n\r");
+    puts("Created/Last Updated by Rouvik Maji 12/11/2024 -- 9:27PM IST\n\r");
 
     // scr_colorMode = COLOR(BLACK, RED);
     // puts("Note to self: The memory table is stored at 0x8200 and its size(number of 24 bit elements) at 0x7e09\n\r");
@@ -51,10 +51,6 @@ int _cdecl kmain()
 
     ISR_Initialise();   // initialise the interrupt table
     IDT_LoadIDTTable(); // load the interrupt table to idtr
-
-    __asm {             // calling an interrupt
-        int 2
-    };
 
     while (true);       // halt
 }

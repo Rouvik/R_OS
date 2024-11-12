@@ -1,21 +1,22 @@
 Open Watcom Linker Version 2.0 beta Jul 17 2024 02:07:46 (64-bit)
 Copyright (c) 2002-2024 The Open Watcom Contributors. All Rights Reserved.
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       24/11/11 22:56:03
+Created on:       24/11/12 21:36:37
 Warning! W1027: file ../build/kernel/drivers/tty.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\drivers\tty.c): redefinition of SCREEN_WIDTH ignored
 Warning! W1027: file ../build/kernel/drivers/tty.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\drivers\tty.c): redefinition of SCREEN_HEIGHT ignored
-Warning! W1027: file ../build/kernel/system/idt.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\system\idt.c): redefinition of printInt ignored
-Warning! W1027: file ../build/kernel/system/idt.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\system\idt.c): redefinition of printLongInt ignored
-Warning! W1027: file ../build/kernel/system/idt.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\system\idt.c): redefinition of printHexInt ignored
-Warning! W1027: file ../build/kernel/system/idt.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\system\idt.c): redefinition of _printf ignored
-Warning! W1027: file ../build/kernel/system/idt.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\system\idt.c): redefinition of SCREEN_WIDTH ignored
-Warning! W1027: file ../build/kernel/system/idt.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\system\idt.c): redefinition of SCREEN_HEIGHT ignored
-Warning! W1027: file ../build/kernel/system/isr.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\system\isr.c): redefinition of printInt ignored
-Warning! W1027: file ../build/kernel/system/isr.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\system\isr.c): redefinition of printLongInt ignored
-Warning! W1027: file ../build/kernel/system/isr.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\system\isr.c): redefinition of printHexInt ignored
-Warning! W1027: file ../build/kernel/system/isr.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\system\isr.c): redefinition of _printf ignored
-Warning! W1027: file ../build/kernel/system/isr.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\system\isr.c): redefinition of SCREEN_WIDTH ignored
-Warning! W1027: file ../build/kernel/system/isr.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\system\isr.c): redefinition of SCREEN_HEIGHT ignored
+Warning! W1027: file ../build/kernel/interrupts/idt.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\interrupts\idt.c): redefinition of printInt ignored
+Warning! W1027: file ../build/kernel/interrupts/idt.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\interrupts\idt.c): redefinition of printLongInt ignored
+Warning! W1027: file ../build/kernel/interrupts/idt.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\interrupts\idt.c): redefinition of printHexInt ignored
+Warning! W1027: file ../build/kernel/interrupts/idt.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\interrupts\idt.c): redefinition of _printf ignored
+Warning! W1027: file ../build/kernel/interrupts/idt.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\interrupts\idt.c): redefinition of SCREEN_WIDTH ignored
+Warning! W1027: file ../build/kernel/interrupts/idt.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\interrupts\idt.c): redefinition of SCREEN_HEIGHT ignored
+Warning! W1027: file ../build/kernel/interrupts/isr.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\interrupts\isr.c): redefinition of SCREEN_WIDTH ignored
+Warning! W1027: file ../build/kernel/interrupts/isr.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\interrupts\isr.c): redefinition of SCREEN_HEIGHT ignored
+Warning! W1027: file ../build/kernel/interrupts/isr.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\interrupts\isr.c): redefinition of printInt ignored
+Warning! W1027: file ../build/kernel/interrupts/isr.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\interrupts\isr.c): redefinition of printLongInt ignored
+Warning! W1027: file ../build/kernel/interrupts/isr.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\interrupts\isr.c): redefinition of printHexInt ignored
+Warning! W1027: file ../build/kernel/interrupts/isr.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\interrupts\isr.c): redefinition of _printf ignored
+Warning! W1027: file ../build/kernel/interrupts/isr.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\interrupts\isr.c): redefinition of g_ISRHandlers ignored
 Executable Image: ../build/kernel_out.bin
 creating a RAW Binary Image executable
 
@@ -27,7 +28,7 @@ creating a RAW Binary Image executable
 Group                           Address              Size
 =====                           =======              ====
 
-DGROUP                          0000bdfc             000009e0
+DGROUP                          0000bf60             00001644
 
 
 
@@ -39,11 +40,11 @@ Segment                Class          Group          Address         Size
 =======                =====          =====          =======         ====
 
 _ENTRY                 CODE           AUTO           00008300        00000018
-_TEXT                  CODE           AUTO           00008320        00003ada
-CONST                  DATA           DGROUP         0000bdfc        000001af
-CONST2                 DATA           DGROUP         0000bfac        00000020
-_DATA                  DATA           DGROUP         0000bfcc        0000000e
-_BSS                   BSS            DGROUP         0000bfdc        00000800
+_TEXT                  CODE           AUTO           00008320        00003c3f
+CONST                  DATA           DGROUP         0000bf60        00000591
+CONST2                 DATA           DGROUP         0000c4f4        000000a0
+_DATA                  DATA           DGROUP         0000c594        00000810
+_BSS                   BSS            DGROUP         0000cda4        00000800
 
 
                         +----------------+
@@ -318,39 +319,42 @@ Module: ../build/kernel/kentry.obj(../build/kernel/kentry.obj)
 Module: ../build/kernel/x86.obj(../build/kernel/x86.obj)
 00008d90       _x86_div_u64
 00008dcd       _x86_IDT_Load
+00008dda       _x86_Death_After_Interrupt
 Module: ../build/kernel/main.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\main.c)
-00008e00       printInt
-00008eaf       printLongInt
-00008f7a       printHexInt
-0000904c       _printf
-00009204+      readMemory
-00009284       _kmain
-0000bfac       SCREEN_WIDTH
-0000bfb0       SCREEN_HEIGHT
+00008e04       printInt
+00008eb3       printLongInt
+00008f7e       printHexInt
+00009050       _printf
+00009208+      readMemory
+00009288       _kmain
+0000c4f4       SCREEN_WIDTH
+0000c4f8       SCREEN_HEIGHT
+0000c594       g_ISRHandlers
 Module: ../build/kernel/drivers/tty.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\drivers\tty.c)
-00009308       clearTTY
-00009360       putc
-000094f1*      mputc
-00009538       puts
-00009593*      mputs
-000095de*      setCur
-0000961f*      setPos
-00009658*      setX
-0000967e*      setY
-0000bfcc+      video_Buffer
-0000bfd0+      scr_X
-0000bfd1+      scr_Y
-0000bfd2       scr_colorMode
-Module: ../build/kernel/system/idt.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\system\idt.c)
-00009ace       IDT_SetGate
-00009b3a       IDT_LoadIDTTable
-00009b5b*      IDT_EnableGate
-0000bfd4+      g_IDTDescriptor
-0000bfdc+      g_IDT
-Module: ../build/kernel/system/isr.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\system\isr.c)
-00009fc6       _x86_ISR_Handler
-Module: ../build/kernel/system/isr_gen.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\system\isr_gen.c)
-00009ff4       ISR_Initialise
+0000930a       clearTTY
+00009362       putc
+000094f3*      mputc
+0000953a       puts
+00009595*      mputs
+000095e0*      setCur
+00009621*      setPos
+0000965a*      setX
+00009680*      setY
+0000c994+      video_Buffer
+0000c998+      scr_X
+0000c999+      scr_Y
+0000c99a       scr_colorMode
+Module: ../build/kernel/interrupts/idt.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\interrupts\idt.c)
+00009ad0       IDT_SetGate
+00009b3c       IDT_LoadIDTTable
+00009b5d       IDT_EnableGate
+0000c99c+      g_IDTDescriptor
+0000cda4+      g_IDT
+Module: ../build/kernel/interrupts/isr.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\interrupts\isr.c)
+00009fc8       _x86_ISR_Handler
+0000a125*      ISR_RegisterHandler
+Module: ../build/kernel/interrupts/isr_gen.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\interrupts\isr_gen.c)
+0000a159       ISR_Initialise
 
 
                         +---------------------+
@@ -368,33 +372,33 @@ Module          Segment               Class           Address         Size
 ../build/kernel/kentry.obj
                 _ENTRY                CODE           00008300  !      00000018
 ../build/kernel/x86.obj
-                _TEXT                 CODE           00008d90  !      0000004a
+                _TEXT                 CODE           00008d90  !      0000004e
 C:\Users\majir\Desktop\R_OS\kernel\wat_c\main.c
-                _TEXT                 CODE           00008dda  !      0000052e
-                CONST                 DATA           0000bdfc  !      00000187
-                CONST2                DATA           0000bfac  !      00000008
-                _DATA                 DATA           0000bfcc  !      00000000
+                _TEXT                 CODE           00008dde  !      0000052c
+                CONST                 DATA           0000bf60  !      00000188
+                CONST2                DATA           0000c4f4  !      00000008
+                _DATA                 DATA           0000c594  !      00000400
 C:\Users\majir\Desktop\R_OS\kernel\wat_c\drivers\tty.c
-                _TEXT                 CODE           00009308  !      0000039c
-                CONST                 DATA           0000bf84  !      00000000
-                CONST2                DATA           0000bfb4  !      00000008
-                _DATA                 DATA           0000bfcc  !      00000007
-C:\Users\majir\Desktop\R_OS\kernel\wat_c\system\idt.c
-                _TEXT                 CODE           000096a4  !      000004f8
-                CONST                 DATA           0000bf84  !      00000008
-                CONST2                DATA           0000bfbc  !      00000008
-                _DATA                 DATA           0000bfd4  !      00000006
-                _BSS                  BSS            0000bfdc  !      00000800
-C:\Users\majir\Desktop\R_OS\kernel\wat_c\system\isr.c
-                _TEXT                 CODE           00009b9c  !      00000458
-                CONST                 DATA           0000bf8c  !      0000001f
-                CONST2                DATA           0000bfc4  !      00000008
-                _DATA                 DATA           0000bfdc  !      00000000
-C:\Users\majir\Desktop\R_OS\kernel\wat_c\system\isr_gen.c
-                _TEXT                 CODE           00009ff4  !      00001e06
-                CONST                 DATA           0000bfac  !      00000000
-                CONST2                DATA           0000bfcc  !      00000000
-                _DATA                 DATA           0000bfdc  !      00000000
+                _TEXT                 CODE           0000930a  !      0000039c
+                CONST                 DATA           0000c0e8  !      00000000
+                CONST2                DATA           0000c4fc  !      00000008
+                _DATA                 DATA           0000c994  !      00000007
+C:\Users\majir\Desktop\R_OS\kernel\wat_c\interrupts\idt.c
+                _TEXT                 CODE           000096a6  !      000004f8
+                CONST                 DATA           0000c0e8  !      00000008
+                CONST2                DATA           0000c504  !      00000008
+                _DATA                 DATA           0000c99c  !      00000006
+                _BSS                  BSS            0000cda4  !      00000800
+C:\Users\majir\Desktop\R_OS\kernel\wat_c\interrupts\isr.c
+                _TEXT                 CODE           00009b9e  !      000005bb
+                CONST                 DATA           0000c0f0  !      00000401
+                CONST2                DATA           0000c50c  !      00000088
+                _DATA                 DATA           0000c9a4  !      00000400
+C:\Users\majir\Desktop\R_OS\kernel\wat_c\interrupts\isr_gen.c
+                _TEXT                 CODE           0000a159  !      00001e06
+                CONST                 DATA           0000c4f4  !      00000000
+                CONST2                DATA           0000c594  !      00000000
+                _DATA                 DATA           0000cda4  !      00000000
 Warning! W1014: stack segment not found
 
 
@@ -403,6 +407,6 @@ Warning! W1014: stack segment not found
                         +-----------------------+
 
 Stack size:  7e00 (32256.)
-Memory size:  44dc (17628.)
+Memory size:  52a4 (21156.)
 Entry point address: 00008300
 Link time: 00:00.09

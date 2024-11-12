@@ -3,6 +3,7 @@ bits 32
 section _TEXT class=CODE
 global _x86_div_u64
 global _x86_IDT_Load
+global _x86_Death_After_Interrupt
 
 ;
 ; _x86_div_u64 - Divides a 64 bit number by another 64 bit number
@@ -20,7 +21,7 @@ _x86_div_u64:
     push ebx
 
     ; divide upper 32 bits
-    mov eax, [ebp + 12]          ; the upper 32 bits
+    mov eax, [ebp + 12]         ; the upper 32 bits
     mov ecx, [ebp + 16]
 
     or ecx, ecx                 ; check for div by zero
@@ -76,3 +77,13 @@ _x86_IDT_Load:
     pop eax             ; restore regs and stack
     pop ebp
     ret
+
+;
+; _x86_Death_After_Interrupt - Clears interrupts and halts the CPU indefinetly
+; Function Signature: x86_Death_After_Interrupt()
+;
+_x86_Death_After_Interrupt:
+    cli                 ; clear interrupt flags to avoid re runs
+    hlt
+.hlt:                   ; hard halt just in case
+    jmp .hlt
