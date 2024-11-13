@@ -4,6 +4,7 @@
 #include "include/x86_inc.h"
 #include "./interrupts/idt.h"
 #include "./interrupts/isr.h"
+#include "./interrupts/irq.h"
 
 typedef struct memEntry
 {
@@ -23,6 +24,11 @@ void readMemory()
         printf("Base Address: %ld Length: %ld Type: %d Extended Attribute: %d\r\n", addp->baseAddr, addp->length, addp->type, addp->extAttr);
         addp++;
     }
+}
+
+void timer(ISR_Register_t *reg)
+{
+    putc('.');
 }
 
 int _cdecl kmain()
@@ -51,6 +57,8 @@ int _cdecl kmain()
 
     ISR_Initialise();   // initialise the interrupt table
     IDT_LoadIDTTable(); // load the interrupt table to idtr
+    IRQ_Initialise();    // initialise the Interrupt requests
+    IRQ_RegisterHandler(0, timer);
 
     while (true);       // halt
 }

@@ -13,13 +13,13 @@ typedef struct
     uint32_t edi, esi, ebp, kern_esp, ebx, edx, ecx, eax;
     uint32_t interrupt_number, error;
     uint32_t eip, cs, eflags, esp, ss;
-} _Packed ISR_Registers_t;
+} _Packed ISR_Register_t;
 
-typedef void (*ISR_HandlerF_t)(ISR_Registers_t *regs); // typedef functions to handle the interrupts
+typedef void (*ISR_HandlerF_t)(ISR_Register_t *regs); // typedef functions to handle the interrupts
 
 ISR_HandlerF_t g_ISRHandlers[256] = {0};
 
-void _cdecl x86_ISR_Handler(ISR_Registers_t *registers);
+void _cdecl x86_ISR_Handler(ISR_Register_t *registers);
 
 void ISR_Initialise();
 

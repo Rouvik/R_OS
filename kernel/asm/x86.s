@@ -4,12 +4,18 @@ section _TEXT class=CODE
 global _x86_div_u64
 global _x86_IDT_Load
 global _x86_Death_After_Interrupt
+global _x86_sti
+global _x86_cli
+global _x86_outb
+global _x86_inb
+
+; x86 core ==================================================================
 
 ;
 ; _x86_div_u64 - Divides a 64 bit number by another 64 bit number
 ; Function signature: void _cdecl x86_div_u64(uint64_t divident, uint32_t divisor, uint64_t *quot, uint32_t *rem);
 ; Parameters:
-;   - divident = ebp + 8   (8 bytes)
+;   - divident = ebp + 8    (8 bytes)
 ;   - divisor = ebp + 16    (4 bytes)
 ;   - quot = ebp + 20       (4 bytes long address)
 ;   - rem = ebp + 24        (4 bytes long address)
@@ -58,6 +64,8 @@ _x86_div_u64:
     pop ebp
     ret
 
+; IDT ==============================INTERRUPTS===============================
+
 ;
 ; _x86_IDT_Load - Loads the interrupt descriptor to the system IDTR
 ; Function signature: void _cdecl x86_IDT_Load(IDTDesciptor_t *idtDescriptor)
@@ -87,3 +95,41 @@ _x86_Death_After_Interrupt:
     hlt
 .hlt:                   ; hard halt just in case
     jmp .hlt
+
+;
+; _x86_sti - Enables interrupts for CPU
+; Function signature: x86_sti()
+;
+_x86_sti:
+    sti
+    ret
+
+;
+; _x86_cli - Disables interrupts for CPU
+; Function signature: x86_cli()
+;
+_x86_cli:
+    cli
+    ret
+
+; IO =================================================================
+
+;
+; _x86_outb - Writes a byte to output port
+; Function Signature: x86_outb(uint16_t portNumber, uint8_t data)
+;
+_x86_outb:
+    mov dx, [esp + 4]
+    mov al, [esp + 8]
+    out dx, al
+    ret
+
+;
+; _x86_inb - Reads a byte from input port
+; Function Signature: x86_inb(uint16_t portNumber)
+;
+_x86_inb:
+    mov dx, [esp + 4]
+    xor eax, eax
+    in al, dx
+    ret

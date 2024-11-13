@@ -285,7 +285,7 @@ gen_memory_table:
 LoadKernel:
     push bx
 
-    mov al, 38                      ; read 38 sectors (hardcoded kernel size, will improvise this later)
+    mov al, 42                      ; read 42 sectors (hardcoded kernel size, will improvise this later)
     mov ch, 0                       ; from cylinder 0
     mov cl, 3                       ; sector 3
     add cl, [reserved_sectors]      ; and the reserved sectors later

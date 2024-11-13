@@ -35,11 +35,8 @@ static const char * const ISR_Exception_Messages[] = {
     "Interrupt: Reserved (0x31)"
 };
 
-void _cdecl x86_ISR_Handler(ISR_Registers_t *registers)
+void _cdecl x86_ISR_Handler(ISR_Register_t *registers)
 {
-    scr_colorMode = COLOR(BLACK, LIGHT_GREEN);
-    printf("Interrupt number: %d\r\n", registers->interrupt_number);
-
     if (g_ISRHandlers[registers->interrupt_number] != NULL)
     {
         g_ISRHandlers[registers->interrupt_number](registers);
