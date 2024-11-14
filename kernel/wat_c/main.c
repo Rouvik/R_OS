@@ -28,10 +28,17 @@ void readMemory()
 
 void timer(ISR_Register_t *reg)
 {
-    putc('.');
+    (void)reg;
+    // putc('.');
 }
 
-int _cdecl kmain()
+void kbd(ISR_Register_t *reg)
+{
+    (void)reg;
+    x86_inb(0x60); // read the kbd buffer to actually clear the interrupt
+}
+
+int __cdecl kmain()
 {
     scr_colorMode = COLOR(BLACK, BLACK);
     clearTTY();
@@ -59,6 +66,7 @@ int _cdecl kmain()
     IDT_LoadIDTTable(); // load the interrupt table to idtr
     IRQ_Initialise();    // initialise the Interrupt requests
     IRQ_RegisterHandler(0, timer);
+    IRQ_RegisterHandler(1, kbd);
 
     while (true);       // halt
 }

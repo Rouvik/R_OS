@@ -1,7 +1,7 @@
 Open Watcom Linker Version 2.0 beta Jul 17 2024 02:07:46 (64-bit)
 Copyright (c) 2002-2024 The Open Watcom Contributors. All Rights Reserved.
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       24/11/14 03:24:11
+Created on:       24/11/15 03:09:13
 Warning! W1027: file ../build/kernel/drivers/8259_pic.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\drivers\8259_pic.c): redefinition of PIC_CMD ignored
 Warning! W1027: file ../build/kernel/drivers/8259_pic.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\drivers\8259_pic.c): redefinition of PIC_ICW1 ignored
 Warning! W1027: file ../build/kernel/drivers/8259_pic.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\drivers\8259_pic.c): redefinition of PIC_ICW4 ignored
@@ -41,7 +41,7 @@ creating a RAW Binary Image executable
 Group                           Address              Size
 =====                           =======              ====
 
-DGROUP                          0000c89c             00001af7
+DGROUP                          0000c8bc             00001af7
 
 
 
@@ -53,11 +53,11 @@ Segment                Class          Group          Address         Size
 =======                =====          =====          =======         ====
 
 _ENTRY                 CODE           AUTO           00008300        00000018
-_TEXT                  CODE           AUTO           00008320        00004579
-CONST                  DATA           DGROUP         0000c89c        000005f2
-CONST2                 DATA           DGROUP         0000ce90        000000a8
-_DATA                  DATA           DGROUP         0000cf38        00000c10
-_BSS                   BSS            DGROUP         0000db48        0000084b
+_TEXT                  CODE           AUTO           00008320        0000459c
+CONST                  DATA           DGROUP         0000c8bc        000005f2
+CONST2                 DATA           DGROUP         0000ceb0        000000a8
+_DATA                  DATA           DGROUP         0000cf58        00000c10
+_BSS                   BSS            DGROUP         0000db68        0000084b
 
 
                         +----------------+
@@ -344,53 +344,54 @@ Module: ../build/kernel/main.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\main.c
 00009068       _printf
 00009220+      readMemory
 000092a0+      timer
-000092c1       _kmain
-0000ce90       SCREEN_WIDTH
-0000ce94       SCREEN_HEIGHT
-0000cf38       g_ISRHandlers
-0000db48       PIC_CMD
-0000db49       PIC_ICW1
-0000db4a       PIC_ICW4
+000092b3+      kbd
+000092d4       _kmain
+0000ceb0       SCREEN_WIDTH
+0000ceb4       SCREEN_HEIGHT
+0000cf58       g_ISRHandlers
+0000db68       PIC_CMD
+0000db69       PIC_ICW1
+0000db6a       PIC_ICW4
 Module: ../build/kernel/drivers/8259_pic.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\drivers\8259_pic.c)
-00009358       PIC_configure
-00009455*      PIC_mask
-000094f9*      PIC_disable
-0000953e*      PIC_send_specific_EOI
-000095b2       PIC_send_non_specific_EOI
-00009601*      PIC_read_IRR
-00009669*      PIC_read_ISR
+0000937b       PIC_configure
+00009478*      PIC_mask
+0000951c*      PIC_disable
+00009561*      PIC_send_specific_EOI
+000095d5       PIC_send_non_specific_EOI
+00009624*      PIC_read_IRR
+0000968c*      PIC_read_ISR
 Module: ../build/kernel/drivers/tty.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\drivers\tty.c)
-000096d1       clearTTY
-00009729       putc
-000098ba*      mputc
-00009901       puts
-0000995c*      mputs
-000099a7*      setCur
-000099e8*      setPos
-00009a21*      setX
-00009a47*      setY
-0000d338+      video_Buffer
-0000d33c+      scr_X
-0000d33d+      scr_Y
-0000d33e       scr_colorMode
+000096f4       clearTTY
+0000974c       putc
+000098dd*      mputc
+00009924       puts
+0000997f*      mputs
+000099ca*      setCur
+00009a0b*      setPos
+00009a44*      setX
+00009a6a*      setY
+0000d358+      video_Buffer
+0000d35c+      scr_X
+0000d35d+      scr_Y
+0000d35e       scr_colorMode
 Module: ../build/kernel/interrupts/idt.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\interrupts\idt.c)
-00009e97       IDT_SetGate
-00009f03       IDT_LoadIDTTable
-00009f24       IDT_EnableGate
-0000d340+      g_IDTDescriptor
-0000db50+      g_IDT
+00009eba       IDT_SetGate
+00009f26       IDT_LoadIDTTable
+00009f47       IDT_EnableGate
+0000d360+      g_IDTDescriptor
+0000db70+      g_IDT
 Module: ../build/kernel/interrupts/irq.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\interrupts\irq.c)
-0000a38f+      IRQ_Handler
-0000a456       IRQ_RegisterHandler
-0000a478       IRQ_Initialise
-0000e350+      g_IRQHandlers
+0000a3b2+      IRQ_Handler
+0000a479       IRQ_RegisterHandler
+0000a49b       IRQ_Initialise
+0000e370+      g_IRQHandlers
 Module: ../build/kernel/interrupts/isr.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\interrupts\isr.c)
-0000a8f9       _x86_ISR_Handler
-0000aa3b       ISR_RegisterHandler
+0000a91c       _x86_ISR_Handler
+0000aa5e       ISR_RegisterHandler
 Module: ../build/kernel/interrupts/isr_gen.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\interrupts\isr_gen.c)
-0000aa6f       ISR_Initialise
+0000aa92       ISR_Initialise
 Module: ../build/kernel/system/io.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\system\io.c)
-0000c875       x86_iowait
+0000c898       x86_iowait
 
 
                         +---------------------+
@@ -410,49 +411,49 @@ Module          Segment               Class           Address         Size
 ../build/kernel/x86.obj
                 _TEXT                 CODE           00008d90  !      00000066
 C:\Users\majir\Desktop\R_OS\kernel\wat_c\main.c
-                _TEXT                 CODE           00008df6  !      00000562
-                CONST                 DATA           0000c89c  !      00000188
-                CONST2                DATA           0000ce90  !      00000008
-                _DATA                 DATA           0000cf38  !      00000400
-                _BSS                  BSS            0000db48  !      00000003
+                _TEXT                 CODE           00008df6  !      00000585
+                CONST                 DATA           0000c8bc  !      00000188
+                CONST2                DATA           0000ceb0  !      00000008
+                _DATA                 DATA           0000cf58  !      00000400
+                _BSS                  BSS            0000db68  !      00000003
 C:\Users\majir\Desktop\R_OS\kernel\wat_c\drivers\8259_pic.c
-                _TEXT                 CODE           00009358  !      00000379
-                CONST                 DATA           0000ca24  !      00000000
-                CONST2                DATA           0000ce98  !      00000000
-                _DATA                 DATA           0000d338  !      00000000
-                _BSS                  BSS            0000db4c  !      00000003
+                _TEXT                 CODE           0000937b  !      00000379
+                CONST                 DATA           0000ca44  !      00000000
+                CONST2                DATA           0000ceb8  !      00000000
+                _DATA                 DATA           0000d358  !      00000000
+                _BSS                  BSS            0000db6c  !      00000003
 C:\Users\majir\Desktop\R_OS\kernel\wat_c\drivers\tty.c
-                _TEXT                 CODE           000096d1  !      0000039c
-                CONST                 DATA           0000ca24  !      00000000
-                CONST2                DATA           0000ce98  !      00000008
-                _DATA                 DATA           0000d338  !      00000007
+                _TEXT                 CODE           000096f4  !      0000039c
+                CONST                 DATA           0000ca44  !      00000000
+                CONST2                DATA           0000ceb8  !      00000008
+                _DATA                 DATA           0000d358  !      00000007
 C:\Users\majir\Desktop\R_OS\kernel\wat_c\interrupts\idt.c
-                _TEXT                 CODE           00009a6d  !      000004f8
-                CONST                 DATA           0000ca24  !      00000008
-                CONST2                DATA           0000cea0  !      00000008
-                _DATA                 DATA           0000d340  !      00000006
-                _BSS                  BSS            0000db50  !      00000800
+                _TEXT                 CODE           00009a90  !      000004f8
+                CONST                 DATA           0000ca44  !      00000008
+                CONST2                DATA           0000cec0  !      00000008
+                _DATA                 DATA           0000d360  !      00000006
+                _BSS                  BSS            0000db70  !      00000800
 C:\Users\majir\Desktop\R_OS\kernel\wat_c\interrupts\irq.c
-                _TEXT                 CODE           00009f65  !      0000056a
-                CONST                 DATA           0000ca2c  !      00000078
-                CONST2                DATA           0000cea8  !      00000008
-                _DATA                 DATA           0000d348  !      00000400
-                _BSS                  BSS            0000e350  !      00000043
+                _TEXT                 CODE           00009f88  !      0000056a
+                CONST                 DATA           0000ca4c  !      00000078
+                CONST2                DATA           0000cec8  !      00000008
+                _DATA                 DATA           0000d368  !      00000400
+                _BSS                  BSS            0000e370  !      00000043
 C:\Users\majir\Desktop\R_OS\kernel\wat_c\interrupts\isr.c
-                _TEXT                 CODE           0000a4cf  !      000005a0
-                CONST                 DATA           0000caa4  !      000003ea
-                CONST2                DATA           0000ceb0  !      00000088
-                _DATA                 DATA           0000d748  !      00000400
+                _TEXT                 CODE           0000a4f2  !      000005a0
+                CONST                 DATA           0000cac4  !      000003ea
+                CONST2                DATA           0000ced0  !      00000088
+                _DATA                 DATA           0000d768  !      00000400
 C:\Users\majir\Desktop\R_OS\kernel\wat_c\interrupts\isr_gen.c
-                _TEXT                 CODE           0000aa6f  !      00001e06
-                CONST                 DATA           0000ce90  !      00000000
-                CONST2                DATA           0000cf38  !      00000000
-                _DATA                 DATA           0000db48  !      00000000
+                _TEXT                 CODE           0000aa92  !      00001e06
+                CONST                 DATA           0000ceb0  !      00000000
+                CONST2                DATA           0000cf58  !      00000000
+                _DATA                 DATA           0000db68  !      00000000
 C:\Users\majir\Desktop\R_OS\kernel\wat_c\system\io.c
-                _TEXT                 CODE           0000c875  !      00000024
-                CONST                 DATA           0000ce90  !      00000000
-                CONST2                DATA           0000cf38  !      00000000
-                _DATA                 DATA           0000db48  !      00000000
+                _TEXT                 CODE           0000c898  !      00000024
+                CONST                 DATA           0000ceb0  !      00000000
+                CONST2                DATA           0000cf58  !      00000000
+                _DATA                 DATA           0000db68  !      00000000
 Warning! W1014: stack segment not found
 
 
@@ -461,6 +462,6 @@ Warning! W1014: stack segment not found
                         +-----------------------+
 
 Stack size:  7e00 (32256.)
-Memory size:  6093 (24723.)
+Memory size:  60b3 (24755.)
 Entry point address: 00008300
-Link time: 00:00.07
+Link time: 00:00.10

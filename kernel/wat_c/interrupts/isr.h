@@ -19,7 +19,7 @@ typedef void (*ISR_HandlerF_t)(ISR_Register_t *regs); // typedef functions to ha
 
 ISR_HandlerF_t g_ISRHandlers[256] = {0};
 
-void _cdecl x86_ISR_Handler(ISR_Register_t *registers);
+void __cdecl x86_ISR_Handler(ISR_Register_t *registers);
 
 void ISR_Initialise();
 

@@ -35,7 +35,7 @@ static const char * const ISR_Exception_Messages[] = {
     "Interrupt: Reserved (0x31)"
 };
 
-void _cdecl x86_ISR_Handler(ISR_Register_t *registers)
+void __cdecl x86_ISR_Handler(ISR_Register_t *registers)
 {
     if (g_ISRHandlers[registers->interrupt_number] != NULL)
     {
