@@ -59,6 +59,12 @@ entry:
     mov di, 0x8200                      ; Write to location 0x8200
     call gen_memory_table
 
+    mov si, vesa_reading_msg            ; read VESA info to VESA Block Buffer
+    call ttyWrite
+
+    mov di, VesaInfoBlockBuffer
+    call get_vesa_info
+
     mov si, setup_kernel_msg
     call ttyWrite
 
@@ -315,6 +321,10 @@ setup_kernel_loaded_msg: db "Loading additional kernel sectors...this might take
 disk_read_error_msg: db "Failed to read disk after 3 tries...please reset and boot again", ENDL, 0
 disk_reset_error_msg: db "Failed to reset disk...please reboot", ENDL, 0
 
+vesa_reading_msg: db "Reading VESA info...", ENDL, 0
+vesa_success_msg: db "Successfully read VESA info!", ENDL, 0
+vesa_failure_msg: db "Failed to read VESA info!", ENDL, 0
+
 ; GDT ---------------------------------------
 LoadGDT:
     lgdt [g_GDTDesc]
@@ -361,3 +371,44 @@ g_GDT:
 g_GDTDesc:
     dw g_GDTDesc - g_GDT - 1    ; size
     dd g_GDT                    ; offset
+
+struc VesaInfoBlock
+    .Signature resb 4
+    .Version resw 1
+    .OEMNamePtr resd 1
+    .Capabilities resd 1
+
+    .VideoModesOffset resw 1
+    .VideoModesSegment resw 1
+
+    .CountOf64KBlocks resw 1
+    .OEMSoftwareRevision resw 1
+    .OEMVendorNamePtr resd 1
+    .OEMProductNamePtr resd 1
+    .OEMProductRevisionPtr resd 1
+    .Reserved resd 222
+    .OEMData resb 256
+endstruc
+
+get_vesa_info:
+    clc
+    mov ax, 0x4f00
+    int 0x10
+    cmp ax, 0x004f
+    jne .failed
+    mov si, vesa_success_msg
+    call ttyWrite
+    ret
+
+.failed:
+    stc
+    mov si, vesa_failure_msg
+    call ttyWrite
+    ret
+
+ALIGN(4)
+
+VesaInfoBlockBuffer: istruc VesaInfoBlock
+    at VesaInfoBlock.Signature, db "VESA"
+    times 508 db 0
+iend
