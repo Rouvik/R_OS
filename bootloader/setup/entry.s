@@ -25,6 +25,9 @@ bits 16
 %define KbdControllerDataPort 0x60
 %define KbdControllerCommandPort 0x64
 
+%define kernel_start_loc 0x8200
+%define memory_table_loc 0x8500
+
 jmp short entry
 nop
 ; boot setup table ---------------------------
@@ -34,7 +37,7 @@ gdt_location: dd 0          ; store the dynamic GDT location here
 memtable_size: db 0         ; store the Memory Map size here (the number of elements)
 
 entry:
-    mov [bootdrive_number], dl  ; save the bootdrive number again
+    mov [bootdrive_number], dl          ; save the bootdrive number again
 
     mov si, setup_memory_msg
     call ttyWrite
@@ -56,14 +59,14 @@ entry:
     mov si, setup_gen_memory_table_msg  ; Get the system available memory map
     call ttyWrite
 
-    mov di, 0x8200                      ; Write to location 0x8200
+    mov di, memory_table_loc            ; Write to location memory_table_loc
     call gen_memory_table
 
-    mov si, vesa_reading_msg            ; read VESA info to VESA Block Buffer
-    call ttyWrite
+    ; mov si, vesa_reading_msg            ; read VESA info to VESA Block Buffer
+    ; call ttyWrite
 
-    mov di, VesaInfoBlockBuffer
-    call get_vesa_info
+    ; mov di, VesaInfoBlockBuffer
+    ; call get_vesa_info
 
     mov si, setup_kernel_msg
     call ttyWrite
@@ -85,7 +88,7 @@ entry:
     or al, 1
     mov cr0, eax
 
-    jmp dword 08h:0x8300                ; the kernel sits at 0x8300
+    jmp dword 08h:kernel_start_loc                ; the kernel sits at kernel_start_loc
 
     hlt
 
@@ -233,7 +236,7 @@ WaitA20Output:
     ret
 
 ;
-; gen_memory_table - Finds and writes a memory table for available extended memory in 0x8200
+; gen_memory_table - Finds and writes a memory table for available extended memory in memory_table_loc
 ; Parameters:
 ;   - di = buffer pointer for result
 ;   - ecx = Size of buffer for result
@@ -297,7 +300,7 @@ LoadKernel:
     add cl, [reserved_sectors]      ; and the reserved sectors later
     mov dl, [bootdrive_number]      ; from bootdrive
     mov dh, 0                       ; with head = 0
-    mov bx, 0x8300                  ; to location 0x8300
+    mov bx, kernel_start_loc        ; to location kernel_start_loc
     call disk_read
 
     mov si, setup_kernel_loaded_msg

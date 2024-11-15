@@ -1,7 +1,7 @@
 Open Watcom Linker Version 2.0 beta Jul 17 2024 02:07:46 (64-bit)
 Copyright (c) 2002-2024 The Open Watcom Contributors. All Rights Reserved.
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       24/11/15 03:09:13
+Created on:       24/11/15 21:12:40
 Warning! W1027: file ../build/kernel/drivers/8259_pic.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\drivers\8259_pic.c): redefinition of PIC_CMD ignored
 Warning! W1027: file ../build/kernel/drivers/8259_pic.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\drivers\8259_pic.c): redefinition of PIC_ICW1 ignored
 Warning! W1027: file ../build/kernel/drivers/8259_pic.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\drivers\8259_pic.c): redefinition of PIC_ICW4 ignored
@@ -41,7 +41,7 @@ creating a RAW Binary Image executable
 Group                           Address              Size
 =====                           =======              ====
 
-DGROUP                          0000c8bc             00001af7
+DGROUP                          0000cebc             00001af7
 
 
 
@@ -52,12 +52,12 @@ DGROUP                          0000c8bc             00001af7
 Segment                Class          Group          Address         Size
 =======                =====          =====          =======         ====
 
-_ENTRY                 CODE           AUTO           00008300        00000018
-_TEXT                  CODE           AUTO           00008320        0000459c
-CONST                  DATA           DGROUP         0000c8bc        000005f2
-CONST2                 DATA           DGROUP         0000ceb0        000000a8
-_DATA                  DATA           DGROUP         0000cf58        00000c10
-_BSS                   BSS            DGROUP         0000db68        0000084b
+_ENTRY                 CODE           AUTO           00008900        00000018
+_TEXT                  CODE           AUTO           00008920        0000459c
+CONST                  DATA           DGROUP         0000cebc        000005f2
+CONST2                 DATA           DGROUP         0000d4b0        000000a8
+_DATA                  DATA           DGROUP         0000d558        00000c10
+_BSS                   BSS            DGROUP         0000e168        0000084b
 
 
                         +----------------+
@@ -71,327 +71,327 @@ Address        Symbol
 =======        ======
 
 Module: ../build/kernel/isr.obj(../build/kernel/isr.obj)
-00008320       _x86_ISR0
-00008329       _x86_ISR1
-00008332       _x86_ISR2
-0000833b       _x86_ISR3
-00008344       _x86_ISR4
-0000834d       _x86_ISR5
-00008356       _x86_ISR6
-0000835f       _x86_ISR7
-00008368       _x86_ISR8
-0000836f       _x86_ISR9
-00008378       _x86_ISR10
-0000837f       _x86_ISR11
-00008386       _x86_ISR12
-0000838d       _x86_ISR13
-00008394       _x86_ISR14
-0000839b       _x86_ISR15
-000083a4       _x86_ISR16
-000083ad       _x86_ISR17
-000083b4       _x86_ISR18
-000083bd       _x86_ISR19
-000083c6       _x86_ISR20
-000083cf       _x86_ISR21
-000083d6       _x86_ISR22
-000083df       _x86_ISR23
-000083e8       _x86_ISR24
-000083f1       _x86_ISR25
-000083fa       _x86_ISR26
-00008403       _x86_ISR27
-0000840c       _x86_ISR28
-00008415       _x86_ISR29
-0000841c       _x86_ISR30
-00008423       _x86_ISR31
-0000842c       _x86_ISR32
-00008435       _x86_ISR33
-0000843e       _x86_ISR34
-00008447       _x86_ISR35
-00008450       _x86_ISR36
-00008459       _x86_ISR37
-00008462       _x86_ISR38
-0000846b       _x86_ISR39
-00008474       _x86_ISR40
-0000847d       _x86_ISR41
-00008486       _x86_ISR42
-0000848f       _x86_ISR43
-00008498       _x86_ISR44
-000084a1       _x86_ISR45
-000084aa       _x86_ISR46
-000084b3       _x86_ISR47
-000084bc       _x86_ISR48
-000084c5       _x86_ISR49
-000084ce       _x86_ISR50
-000084d7       _x86_ISR51
-000084e0       _x86_ISR52
-000084e9       _x86_ISR53
-000084f2       _x86_ISR54
-000084fb       _x86_ISR55
-00008504       _x86_ISR56
-0000850d       _x86_ISR57
-00008516       _x86_ISR58
-0000851f       _x86_ISR59
-00008528       _x86_ISR60
-00008531       _x86_ISR61
-0000853a       _x86_ISR62
-00008543       _x86_ISR63
-0000854c       _x86_ISR64
-00008555       _x86_ISR65
-0000855e       _x86_ISR66
-00008567       _x86_ISR67
-00008570       _x86_ISR68
-00008579       _x86_ISR69
-00008582       _x86_ISR70
-0000858b       _x86_ISR71
-00008594       _x86_ISR72
-0000859d       _x86_ISR73
-000085a6       _x86_ISR74
-000085af       _x86_ISR75
-000085b8       _x86_ISR76
-000085c1       _x86_ISR77
-000085ca       _x86_ISR78
-000085d3       _x86_ISR79
-000085dc       _x86_ISR80
-000085e5       _x86_ISR81
-000085ee       _x86_ISR82
-000085f7       _x86_ISR83
-00008600       _x86_ISR84
-00008609       _x86_ISR85
-00008612       _x86_ISR86
-0000861b       _x86_ISR87
-00008624       _x86_ISR88
-0000862d       _x86_ISR89
-00008636       _x86_ISR90
-0000863f       _x86_ISR91
-00008648       _x86_ISR92
-00008651       _x86_ISR93
-0000865a       _x86_ISR94
-00008663       _x86_ISR95
-0000866c       _x86_ISR96
-00008675       _x86_ISR97
-0000867e       _x86_ISR98
-00008687       _x86_ISR99
-00008690       _x86_ISR100
-00008699       _x86_ISR101
-000086a2       _x86_ISR102
-000086ab       _x86_ISR103
-000086b4       _x86_ISR104
-000086bd       _x86_ISR105
-000086c6       _x86_ISR106
-000086cf       _x86_ISR107
-000086d8       _x86_ISR108
-000086e1       _x86_ISR109
-000086ea       _x86_ISR110
-000086f3       _x86_ISR111
-000086fc       _x86_ISR112
-00008705       _x86_ISR113
-0000870e       _x86_ISR114
-00008717       _x86_ISR115
-00008720       _x86_ISR116
-00008729       _x86_ISR117
-00008732       _x86_ISR118
-0000873b       _x86_ISR119
-00008744       _x86_ISR120
-0000874d       _x86_ISR121
-00008756       _x86_ISR122
-0000875f       _x86_ISR123
-00008768       _x86_ISR124
-00008771       _x86_ISR125
-0000877a       _x86_ISR126
-00008783       _x86_ISR127
-0000878c       _x86_ISR128
-00008798       _x86_ISR129
-000087a4       _x86_ISR130
-000087b0       _x86_ISR131
-000087bc       _x86_ISR132
-000087c8       _x86_ISR133
-000087d4       _x86_ISR134
-000087e0       _x86_ISR135
-000087ec       _x86_ISR136
-000087f8       _x86_ISR137
-00008804       _x86_ISR138
-00008810       _x86_ISR139
-0000881c       _x86_ISR140
-00008828       _x86_ISR141
-00008834       _x86_ISR142
-00008840       _x86_ISR143
-0000884c       _x86_ISR144
-00008858       _x86_ISR145
-00008864       _x86_ISR146
-00008870       _x86_ISR147
-0000887c       _x86_ISR148
-00008888       _x86_ISR149
-00008894       _x86_ISR150
-000088a0       _x86_ISR151
-000088ac       _x86_ISR152
-000088b8       _x86_ISR153
-000088c4       _x86_ISR154
-000088d0       _x86_ISR155
-000088dc       _x86_ISR156
-000088e8       _x86_ISR157
-000088f4       _x86_ISR158
-00008900       _x86_ISR159
-0000890c       _x86_ISR160
-00008918       _x86_ISR161
-00008924       _x86_ISR162
-00008930       _x86_ISR163
-0000893c       _x86_ISR164
-00008948       _x86_ISR165
-00008954       _x86_ISR166
-00008960       _x86_ISR167
-0000896c       _x86_ISR168
-00008978       _x86_ISR169
-00008984       _x86_ISR170
-00008990       _x86_ISR171
-0000899c       _x86_ISR172
-000089a8       _x86_ISR173
-000089b4       _x86_ISR174
-000089c0       _x86_ISR175
-000089cc       _x86_ISR176
-000089d8       _x86_ISR177
-000089e4       _x86_ISR178
-000089f0       _x86_ISR179
-000089fc       _x86_ISR180
-00008a08       _x86_ISR181
-00008a14       _x86_ISR182
-00008a20       _x86_ISR183
-00008a2c       _x86_ISR184
-00008a38       _x86_ISR185
-00008a44       _x86_ISR186
-00008a50       _x86_ISR187
-00008a5c       _x86_ISR188
-00008a68       _x86_ISR189
-00008a74       _x86_ISR190
-00008a80       _x86_ISR191
-00008a8c       _x86_ISR192
-00008a98       _x86_ISR193
-00008aa4       _x86_ISR194
-00008ab0       _x86_ISR195
-00008abc       _x86_ISR196
-00008ac8       _x86_ISR197
-00008ad4       _x86_ISR198
-00008ae0       _x86_ISR199
-00008aec       _x86_ISR200
-00008af8       _x86_ISR201
-00008b04       _x86_ISR202
-00008b10       _x86_ISR203
-00008b1c       _x86_ISR204
-00008b28       _x86_ISR205
-00008b34       _x86_ISR206
-00008b40       _x86_ISR207
-00008b4c       _x86_ISR208
-00008b58       _x86_ISR209
-00008b64       _x86_ISR210
-00008b70       _x86_ISR211
-00008b7c       _x86_ISR212
-00008b88       _x86_ISR213
-00008b94       _x86_ISR214
-00008ba0       _x86_ISR215
-00008bac       _x86_ISR216
-00008bb8       _x86_ISR217
-00008bc4       _x86_ISR218
-00008bd0       _x86_ISR219
-00008bdc       _x86_ISR220
-00008be8       _x86_ISR221
-00008bf4       _x86_ISR222
-00008c00       _x86_ISR223
-00008c0c       _x86_ISR224
-00008c18       _x86_ISR225
-00008c24       _x86_ISR226
-00008c30       _x86_ISR227
-00008c3c       _x86_ISR228
-00008c48       _x86_ISR229
-00008c54       _x86_ISR230
-00008c60       _x86_ISR231
-00008c6c       _x86_ISR232
-00008c78       _x86_ISR233
-00008c84       _x86_ISR234
-00008c90       _x86_ISR235
-00008c9c       _x86_ISR236
-00008ca8       _x86_ISR237
-00008cb4       _x86_ISR238
-00008cc0       _x86_ISR239
-00008ccc       _x86_ISR240
-00008cd8       _x86_ISR241
-00008ce1       _x86_ISR242
-00008cea       _x86_ISR243
-00008cf3       _x86_ISR244
-00008cfc       _x86_ISR245
-00008d05       _x86_ISR246
-00008d0e       _x86_ISR247
-00008d17       _x86_ISR248
-00008d20       _x86_ISR249
-00008d29       _x86_ISR250
-00008d32       _x86_ISR251
-00008d3b       _x86_ISR252
-00008d44       _x86_ISR253
-00008d4d       _x86_ISR254
-00008d56       _x86_ISR255
+00008920       _x86_ISR0
+00008929       _x86_ISR1
+00008932       _x86_ISR2
+0000893b       _x86_ISR3
+00008944       _x86_ISR4
+0000894d       _x86_ISR5
+00008956       _x86_ISR6
+0000895f       _x86_ISR7
+00008968       _x86_ISR8
+0000896f       _x86_ISR9
+00008978       _x86_ISR10
+0000897f       _x86_ISR11
+00008986       _x86_ISR12
+0000898d       _x86_ISR13
+00008994       _x86_ISR14
+0000899b       _x86_ISR15
+000089a4       _x86_ISR16
+000089ad       _x86_ISR17
+000089b4       _x86_ISR18
+000089bd       _x86_ISR19
+000089c6       _x86_ISR20
+000089cf       _x86_ISR21
+000089d6       _x86_ISR22
+000089df       _x86_ISR23
+000089e8       _x86_ISR24
+000089f1       _x86_ISR25
+000089fa       _x86_ISR26
+00008a03       _x86_ISR27
+00008a0c       _x86_ISR28
+00008a15       _x86_ISR29
+00008a1c       _x86_ISR30
+00008a23       _x86_ISR31
+00008a2c       _x86_ISR32
+00008a35       _x86_ISR33
+00008a3e       _x86_ISR34
+00008a47       _x86_ISR35
+00008a50       _x86_ISR36
+00008a59       _x86_ISR37
+00008a62       _x86_ISR38
+00008a6b       _x86_ISR39
+00008a74       _x86_ISR40
+00008a7d       _x86_ISR41
+00008a86       _x86_ISR42
+00008a8f       _x86_ISR43
+00008a98       _x86_ISR44
+00008aa1       _x86_ISR45
+00008aaa       _x86_ISR46
+00008ab3       _x86_ISR47
+00008abc       _x86_ISR48
+00008ac5       _x86_ISR49
+00008ace       _x86_ISR50
+00008ad7       _x86_ISR51
+00008ae0       _x86_ISR52
+00008ae9       _x86_ISR53
+00008af2       _x86_ISR54
+00008afb       _x86_ISR55
+00008b04       _x86_ISR56
+00008b0d       _x86_ISR57
+00008b16       _x86_ISR58
+00008b1f       _x86_ISR59
+00008b28       _x86_ISR60
+00008b31       _x86_ISR61
+00008b3a       _x86_ISR62
+00008b43       _x86_ISR63
+00008b4c       _x86_ISR64
+00008b55       _x86_ISR65
+00008b5e       _x86_ISR66
+00008b67       _x86_ISR67
+00008b70       _x86_ISR68
+00008b79       _x86_ISR69
+00008b82       _x86_ISR70
+00008b8b       _x86_ISR71
+00008b94       _x86_ISR72
+00008b9d       _x86_ISR73
+00008ba6       _x86_ISR74
+00008baf       _x86_ISR75
+00008bb8       _x86_ISR76
+00008bc1       _x86_ISR77
+00008bca       _x86_ISR78
+00008bd3       _x86_ISR79
+00008bdc       _x86_ISR80
+00008be5       _x86_ISR81
+00008bee       _x86_ISR82
+00008bf7       _x86_ISR83
+00008c00       _x86_ISR84
+00008c09       _x86_ISR85
+00008c12       _x86_ISR86
+00008c1b       _x86_ISR87
+00008c24       _x86_ISR88
+00008c2d       _x86_ISR89
+00008c36       _x86_ISR90
+00008c3f       _x86_ISR91
+00008c48       _x86_ISR92
+00008c51       _x86_ISR93
+00008c5a       _x86_ISR94
+00008c63       _x86_ISR95
+00008c6c       _x86_ISR96
+00008c75       _x86_ISR97
+00008c7e       _x86_ISR98
+00008c87       _x86_ISR99
+00008c90       _x86_ISR100
+00008c99       _x86_ISR101
+00008ca2       _x86_ISR102
+00008cab       _x86_ISR103
+00008cb4       _x86_ISR104
+00008cbd       _x86_ISR105
+00008cc6       _x86_ISR106
+00008ccf       _x86_ISR107
+00008cd8       _x86_ISR108
+00008ce1       _x86_ISR109
+00008cea       _x86_ISR110
+00008cf3       _x86_ISR111
+00008cfc       _x86_ISR112
+00008d05       _x86_ISR113
+00008d0e       _x86_ISR114
+00008d17       _x86_ISR115
+00008d20       _x86_ISR116
+00008d29       _x86_ISR117
+00008d32       _x86_ISR118
+00008d3b       _x86_ISR119
+00008d44       _x86_ISR120
+00008d4d       _x86_ISR121
+00008d56       _x86_ISR122
+00008d5f       _x86_ISR123
+00008d68       _x86_ISR124
+00008d71       _x86_ISR125
+00008d7a       _x86_ISR126
+00008d83       _x86_ISR127
+00008d8c       _x86_ISR128
+00008d98       _x86_ISR129
+00008da4       _x86_ISR130
+00008db0       _x86_ISR131
+00008dbc       _x86_ISR132
+00008dc8       _x86_ISR133
+00008dd4       _x86_ISR134
+00008de0       _x86_ISR135
+00008dec       _x86_ISR136
+00008df8       _x86_ISR137
+00008e04       _x86_ISR138
+00008e10       _x86_ISR139
+00008e1c       _x86_ISR140
+00008e28       _x86_ISR141
+00008e34       _x86_ISR142
+00008e40       _x86_ISR143
+00008e4c       _x86_ISR144
+00008e58       _x86_ISR145
+00008e64       _x86_ISR146
+00008e70       _x86_ISR147
+00008e7c       _x86_ISR148
+00008e88       _x86_ISR149
+00008e94       _x86_ISR150
+00008ea0       _x86_ISR151
+00008eac       _x86_ISR152
+00008eb8       _x86_ISR153
+00008ec4       _x86_ISR154
+00008ed0       _x86_ISR155
+00008edc       _x86_ISR156
+00008ee8       _x86_ISR157
+00008ef4       _x86_ISR158
+00008f00       _x86_ISR159
+00008f0c       _x86_ISR160
+00008f18       _x86_ISR161
+00008f24       _x86_ISR162
+00008f30       _x86_ISR163
+00008f3c       _x86_ISR164
+00008f48       _x86_ISR165
+00008f54       _x86_ISR166
+00008f60       _x86_ISR167
+00008f6c       _x86_ISR168
+00008f78       _x86_ISR169
+00008f84       _x86_ISR170
+00008f90       _x86_ISR171
+00008f9c       _x86_ISR172
+00008fa8       _x86_ISR173
+00008fb4       _x86_ISR174
+00008fc0       _x86_ISR175
+00008fcc       _x86_ISR176
+00008fd8       _x86_ISR177
+00008fe4       _x86_ISR178
+00008ff0       _x86_ISR179
+00008ffc       _x86_ISR180
+00009008       _x86_ISR181
+00009014       _x86_ISR182
+00009020       _x86_ISR183
+0000902c       _x86_ISR184
+00009038       _x86_ISR185
+00009044       _x86_ISR186
+00009050       _x86_ISR187
+0000905c       _x86_ISR188
+00009068       _x86_ISR189
+00009074       _x86_ISR190
+00009080       _x86_ISR191
+0000908c       _x86_ISR192
+00009098       _x86_ISR193
+000090a4       _x86_ISR194
+000090b0       _x86_ISR195
+000090bc       _x86_ISR196
+000090c8       _x86_ISR197
+000090d4       _x86_ISR198
+000090e0       _x86_ISR199
+000090ec       _x86_ISR200
+000090f8       _x86_ISR201
+00009104       _x86_ISR202
+00009110       _x86_ISR203
+0000911c       _x86_ISR204
+00009128       _x86_ISR205
+00009134       _x86_ISR206
+00009140       _x86_ISR207
+0000914c       _x86_ISR208
+00009158       _x86_ISR209
+00009164       _x86_ISR210
+00009170       _x86_ISR211
+0000917c       _x86_ISR212
+00009188       _x86_ISR213
+00009194       _x86_ISR214
+000091a0       _x86_ISR215
+000091ac       _x86_ISR216
+000091b8       _x86_ISR217
+000091c4       _x86_ISR218
+000091d0       _x86_ISR219
+000091dc       _x86_ISR220
+000091e8       _x86_ISR221
+000091f4       _x86_ISR222
+00009200       _x86_ISR223
+0000920c       _x86_ISR224
+00009218       _x86_ISR225
+00009224       _x86_ISR226
+00009230       _x86_ISR227
+0000923c       _x86_ISR228
+00009248       _x86_ISR229
+00009254       _x86_ISR230
+00009260       _x86_ISR231
+0000926c       _x86_ISR232
+00009278       _x86_ISR233
+00009284       _x86_ISR234
+00009290       _x86_ISR235
+0000929c       _x86_ISR236
+000092a8       _x86_ISR237
+000092b4       _x86_ISR238
+000092c0       _x86_ISR239
+000092cc       _x86_ISR240
+000092d8       _x86_ISR241
+000092e1       _x86_ISR242
+000092ea       _x86_ISR243
+000092f3       _x86_ISR244
+000092fc       _x86_ISR245
+00009305       _x86_ISR246
+0000930e       _x86_ISR247
+00009317       _x86_ISR248
+00009320       _x86_ISR249
+00009329       _x86_ISR250
+00009332       _x86_ISR251
+0000933b       _x86_ISR252
+00009344       _x86_ISR253
+0000934d       _x86_ISR254
+00009356       _x86_ISR255
 Module: ../build/kernel/kentry.obj(../build/kernel/kentry.obj)
-00008300       kentry
+00008900       kentry
 Module: ../build/kernel/x86.obj(../build/kernel/x86.obj)
-00008d90       _x86_div_u64
-00008dcd       _x86_IDT_Load
-00008dda       _x86_Death_After_Interrupt
-00008dde       _x86_sti
-00008de0*      _x86_cli
-00008de2       _x86_outb
-00008ded       _x86_inb
+00009390       _x86_div_u64
+000093cd       _x86_IDT_Load
+000093da       _x86_Death_After_Interrupt
+000093de       _x86_sti
+000093e0*      _x86_cli
+000093e2       _x86_outb
+000093ed       _x86_inb
 Module: ../build/kernel/main.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\main.c)
-00008e1c       printInt
-00008ecb       printLongInt
-00008f96       printHexInt
-00009068       _printf
-00009220+      readMemory
-000092a0+      timer
-000092b3+      kbd
-000092d4       _kmain
-0000ceb0       SCREEN_WIDTH
-0000ceb4       SCREEN_HEIGHT
-0000cf58       g_ISRHandlers
-0000db68       PIC_CMD
-0000db69       PIC_ICW1
-0000db6a       PIC_ICW4
+0000941c       printInt
+000094cb       printLongInt
+00009596       printHexInt
+00009668       _printf
+00009820+      readMemory
+000098a0+      timer
+000098b3+      kbd
+000098d4       _kmain
+0000d4b0       SCREEN_WIDTH
+0000d4b4       SCREEN_HEIGHT
+0000d558       g_ISRHandlers
+0000e168       PIC_CMD
+0000e169       PIC_ICW1
+0000e16a       PIC_ICW4
 Module: ../build/kernel/drivers/8259_pic.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\drivers\8259_pic.c)
-0000937b       PIC_configure
-00009478*      PIC_mask
-0000951c*      PIC_disable
-00009561*      PIC_send_specific_EOI
-000095d5       PIC_send_non_specific_EOI
-00009624*      PIC_read_IRR
-0000968c*      PIC_read_ISR
+0000997b       PIC_configure
+00009a78*      PIC_mask
+00009b1c*      PIC_disable
+00009b61*      PIC_send_specific_EOI
+00009bd5       PIC_send_non_specific_EOI
+00009c24*      PIC_read_IRR
+00009c8c*      PIC_read_ISR
 Module: ../build/kernel/drivers/tty.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\drivers\tty.c)
-000096f4       clearTTY
-0000974c       putc
-000098dd*      mputc
-00009924       puts
-0000997f*      mputs
-000099ca*      setCur
-00009a0b*      setPos
-00009a44*      setX
-00009a6a*      setY
-0000d358+      video_Buffer
-0000d35c+      scr_X
-0000d35d+      scr_Y
-0000d35e       scr_colorMode
+00009cf4       clearTTY
+00009d4c       putc
+00009edd*      mputc
+00009f24       puts
+00009f7f*      mputs
+00009fca*      setCur
+0000a00b*      setPos
+0000a044*      setX
+0000a06a*      setY
+0000d958+      video_Buffer
+0000d95c+      scr_X
+0000d95d+      scr_Y
+0000d95e       scr_colorMode
 Module: ../build/kernel/interrupts/idt.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\interrupts\idt.c)
-00009eba       IDT_SetGate
-00009f26       IDT_LoadIDTTable
-00009f47       IDT_EnableGate
-0000d360+      g_IDTDescriptor
-0000db70+      g_IDT
+0000a4ba       IDT_SetGate
+0000a526       IDT_LoadIDTTable
+0000a547       IDT_EnableGate
+0000d960+      g_IDTDescriptor
+0000e170+      g_IDT
 Module: ../build/kernel/interrupts/irq.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\interrupts\irq.c)
-0000a3b2+      IRQ_Handler
-0000a479       IRQ_RegisterHandler
-0000a49b       IRQ_Initialise
-0000e370+      g_IRQHandlers
+0000a9b2+      IRQ_Handler
+0000aa79       IRQ_RegisterHandler
+0000aa9b       IRQ_Initialise
+0000e970+      g_IRQHandlers
 Module: ../build/kernel/interrupts/isr.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\interrupts\isr.c)
-0000a91c       _x86_ISR_Handler
-0000aa5e       ISR_RegisterHandler
+0000af1c       _x86_ISR_Handler
+0000b05e       ISR_RegisterHandler
 Module: ../build/kernel/interrupts/isr_gen.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\interrupts\isr_gen.c)
-0000aa92       ISR_Initialise
+0000b092       ISR_Initialise
 Module: ../build/kernel/system/io.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\system\io.c)
-0000c898       x86_iowait
+0000ce98       x86_iowait
 
 
                         +---------------------+
@@ -405,55 +405,55 @@ Module          Segment               Class           Address         Size
 ======          =======               =====           =======         ====
 
 ../build/kernel/isr.obj
-                _TEXT                 CODE           00008320  !      00000a69
+                _TEXT                 CODE           00008920  !      00000a69
 ../build/kernel/kentry.obj
-                _ENTRY                CODE           00008300  !      00000018
+                _ENTRY                CODE           00008900  !      00000018
 ../build/kernel/x86.obj
-                _TEXT                 CODE           00008d90  !      00000066
+                _TEXT                 CODE           00009390  !      00000066
 C:\Users\majir\Desktop\R_OS\kernel\wat_c\main.c
-                _TEXT                 CODE           00008df6  !      00000585
-                CONST                 DATA           0000c8bc  !      00000188
-                CONST2                DATA           0000ceb0  !      00000008
-                _DATA                 DATA           0000cf58  !      00000400
-                _BSS                  BSS            0000db68  !      00000003
+                _TEXT                 CODE           000093f6  !      00000585
+                CONST                 DATA           0000cebc  !      00000188
+                CONST2                DATA           0000d4b0  !      00000008
+                _DATA                 DATA           0000d558  !      00000400
+                _BSS                  BSS            0000e168  !      00000003
 C:\Users\majir\Desktop\R_OS\kernel\wat_c\drivers\8259_pic.c
-                _TEXT                 CODE           0000937b  !      00000379
-                CONST                 DATA           0000ca44  !      00000000
-                CONST2                DATA           0000ceb8  !      00000000
-                _DATA                 DATA           0000d358  !      00000000
-                _BSS                  BSS            0000db6c  !      00000003
+                _TEXT                 CODE           0000997b  !      00000379
+                CONST                 DATA           0000d044  !      00000000
+                CONST2                DATA           0000d4b8  !      00000000
+                _DATA                 DATA           0000d958  !      00000000
+                _BSS                  BSS            0000e16c  !      00000003
 C:\Users\majir\Desktop\R_OS\kernel\wat_c\drivers\tty.c
-                _TEXT                 CODE           000096f4  !      0000039c
-                CONST                 DATA           0000ca44  !      00000000
-                CONST2                DATA           0000ceb8  !      00000008
-                _DATA                 DATA           0000d358  !      00000007
+                _TEXT                 CODE           00009cf4  !      0000039c
+                CONST                 DATA           0000d044  !      00000000
+                CONST2                DATA           0000d4b8  !      00000008
+                _DATA                 DATA           0000d958  !      00000007
 C:\Users\majir\Desktop\R_OS\kernel\wat_c\interrupts\idt.c
-                _TEXT                 CODE           00009a90  !      000004f8
-                CONST                 DATA           0000ca44  !      00000008
-                CONST2                DATA           0000cec0  !      00000008
-                _DATA                 DATA           0000d360  !      00000006
-                _BSS                  BSS            0000db70  !      00000800
+                _TEXT                 CODE           0000a090  !      000004f8
+                CONST                 DATA           0000d044  !      00000008
+                CONST2                DATA           0000d4c0  !      00000008
+                _DATA                 DATA           0000d960  !      00000006
+                _BSS                  BSS            0000e170  !      00000800
 C:\Users\majir\Desktop\R_OS\kernel\wat_c\interrupts\irq.c
-                _TEXT                 CODE           00009f88  !      0000056a
-                CONST                 DATA           0000ca4c  !      00000078
-                CONST2                DATA           0000cec8  !      00000008
-                _DATA                 DATA           0000d368  !      00000400
-                _BSS                  BSS            0000e370  !      00000043
+                _TEXT                 CODE           0000a588  !      0000056a
+                CONST                 DATA           0000d04c  !      00000078
+                CONST2                DATA           0000d4c8  !      00000008
+                _DATA                 DATA           0000d968  !      00000400
+                _BSS                  BSS            0000e970  !      00000043
 C:\Users\majir\Desktop\R_OS\kernel\wat_c\interrupts\isr.c
-                _TEXT                 CODE           0000a4f2  !      000005a0
-                CONST                 DATA           0000cac4  !      000003ea
-                CONST2                DATA           0000ced0  !      00000088
-                _DATA                 DATA           0000d768  !      00000400
+                _TEXT                 CODE           0000aaf2  !      000005a0
+                CONST                 DATA           0000d0c4  !      000003ea
+                CONST2                DATA           0000d4d0  !      00000088
+                _DATA                 DATA           0000dd68  !      00000400
 C:\Users\majir\Desktop\R_OS\kernel\wat_c\interrupts\isr_gen.c
-                _TEXT                 CODE           0000aa92  !      00001e06
-                CONST                 DATA           0000ceb0  !      00000000
-                CONST2                DATA           0000cf58  !      00000000
-                _DATA                 DATA           0000db68  !      00000000
+                _TEXT                 CODE           0000b092  !      00001e06
+                CONST                 DATA           0000d4b0  !      00000000
+                CONST2                DATA           0000d558  !      00000000
+                _DATA                 DATA           0000e168  !      00000000
 C:\Users\majir\Desktop\R_OS\kernel\wat_c\system\io.c
-                _TEXT                 CODE           0000c898  !      00000024
-                CONST                 DATA           0000ceb0  !      00000000
-                CONST2                DATA           0000cf58  !      00000000
-                _DATA                 DATA           0000db68  !      00000000
+                _TEXT                 CODE           0000ce98  !      00000024
+                CONST                 DATA           0000d4b0  !      00000000
+                CONST2                DATA           0000d558  !      00000000
+                _DATA                 DATA           0000e168  !      00000000
 Warning! W1014: stack segment not found
 
 
@@ -463,5 +463,5 @@ Warning! W1014: stack segment not found
 
 Stack size:  7e00 (32256.)
 Memory size:  60b3 (24755.)
-Entry point address: 00008300
-Link time: 00:00.10
+Entry point address: 00008900
+Link time: 00:00.12
