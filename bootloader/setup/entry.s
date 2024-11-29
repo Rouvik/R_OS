@@ -25,16 +25,17 @@ bits 16
 %define KbdControllerDataPort 0x60
 %define KbdControllerCommandPort 0x64
 
-%define kernel_start_loc 0x8200
-%define memory_table_loc 0x8500
+%define kernel_start_loc 0x8800
 
 jmp short entry
 nop
 ; boot setup table ---------------------------
-reserved_sectors: db 1      ; reserved sectors required to be loaded
+reserved_sectors: db 3      ; reserved sectors required to be loaded
 bootdrive_number: db 0      ; the boot drive number to be stored here again
 gdt_location: dd 0          ; store the dynamic GDT location here
 memtable_size: db 0         ; store the Memory Map size here (the number of elements)
+memtable_loc: dw 0          ; store teh Memory Map location here
+vbe_info_loc: dw 0          ; store the location of vbe table here
 
 entry:
     mov [bootdrive_number], dl          ; save the bootdrive number again
@@ -59,14 +60,16 @@ entry:
     mov si, setup_gen_memory_table_msg  ; Get the system available memory map
     call ttyWrite
 
-    mov di, memory_table_loc            ; Write to location memory_table_loc
+    mov [memtable_loc], word memory_table_loc  ; write the memory table location
+    mov di, memory_table_loc                    ; Write to location memory_table_loc
     call gen_memory_table
 
-    ; mov si, vesa_reading_msg            ; read VESA info to VESA Block Buffer
-    ; call ttyWrite
+    mov si, vesa_reading_msg            ; read VESA info to VESA Block Buffer
+    call ttyWrite
 
-    ; mov di, VesaInfoBlockBuffer
-    ; call get_vesa_info
+    mov [vbe_info_loc], word VesaInfoBlockBuffer   ; save VESA Info address
+    mov di, VesaInfoBlockBuffer                     ; The buffer to write to
+    call get_vesa_info                              ; Read VESA VGA info
 
     mov si, setup_kernel_msg
     call ttyWrite
@@ -266,7 +269,8 @@ gen_memory_table:
     jnz .loop
 
 .done:
-    mov [memtable_size], si ; Write the number of elements to memtable_size
+    mov ax, si              ; cant write to memory using sil :(
+    mov [memtable_size], al ; Write the number of elements to memtable_size
     mov si, setup_gen_memory_table_success_msg
     call ttyWrite
 
@@ -315,7 +319,7 @@ setup_a20_msg: db "Enabling legacy A20...", ENDL, 0
 setup_gen_memory_table_msg: db "Detecting system memory map...", ENDL, 0
 setup_gen_memory_table_error_msg: db "Failed to load system memory map", ENDL, 0
 setup_gen_memory_table_unsupported_error_msg: db "Error, memory mapping is unsupported in this system", ENDL, 0
-setup_gen_memory_table_success_msg: db "System memory map loaded at 0x8200", ENDL, 0
+setup_gen_memory_table_success_msg: db "System memory map loaded at 0x8400", ENDL, 0
 setup_gdt_msg: db "Setting up GDT and memory partitions, preparing to enter Protected mode...", ENDL, 0
 setup_pmode_msg: db "Successfully entered protected mode!", ENDL, 0
 setup_kernel_msg: db "Loading kernel...", ENDL, 0
@@ -415,3 +419,5 @@ VesaInfoBlockBuffer: istruc VesaInfoBlock
     at VesaInfoBlock.Signature, db "VESA"
     times 508 db 0
 iend
+
+memory_table_loc:

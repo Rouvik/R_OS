@@ -15,7 +15,7 @@ assembly: bootloader kernel
 	dd if=/dev/zero of=$(BUILD)/main_floppy.img bs=512 count=2880
 	dd if=$(BUILD)/bootbase.bin of=$(BUILD)/main_floppy.img conv=notrunc
 	dd if=$(BUILD)/bootsetup.bin of=$(BUILD)/main_floppy.img obs=512 seek=1 conv=notrunc
-	dd if=$(BUILD)/kernel.bin of=$(BUILD)/main_floppy.img obs=512 seek=3 conv=notrunc
+	dd if=$(BUILD)/kernel.bin of=$(BUILD)/main_floppy.img obs=512 seek=5 conv=notrunc
 	
 # Boot loader compile section -------------------
 bootloader: bootbase bootsetup
