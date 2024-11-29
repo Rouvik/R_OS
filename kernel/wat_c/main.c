@@ -18,15 +18,15 @@ typedef struct VbeInfoBlock
 {
     char VbeSignature[4];
     uint16_t VbeVersion;
-    uint16_t OemStringPtr[2];
+    uint16_t OemStringPtr[2];               // segmented pointer
     uint8_t Capabilities[4];
-    uint16_t VideoModePtr[2];
+    uint16_t VideoModePtr[2];               // segmented pointer
 
     uint16_t CountOf64KBlocks;
     uint16_t OEMSoftwareRevision;
-    uint32_t OEMVendorNamePtr;
-    uint32_t OEMProductNamePtr;
-    uint32_t OEMProductRevisionPtr;
+    uint16_t OEMVendorNamePtr[2];           // segmented pointer
+    uint16_t OEMProductNamePtr[2];          // segmented pointer
+    uint16_t OEMProductRevisionPtr[2];      // segmented pointer
     uint8_t Reserved[222];
     uint8_t OEMData[256];
 } _Packed VbeInfoBlock_t;
@@ -43,32 +43,30 @@ void readVBEInfo()
 {
     VbeInfoBlock_t *block = (VbeInfoBlock_t *)(*((uint16_t *)0x7E0C));
 
-    printf("VBE Loc: %p\r\n", block);
-
     char Sig[5];
     memcpy(Sig, block->VbeSignature, 4);
     Sig[4] = 0;
 
     printf("Signature: %s\r\n"
            "Version: %x\r\n"
-           "OemNamePtr: %p\r\n"
+           "OemNamePtr Seg: %p\r\n"
+           "OemNamePtr Base: %p\r\n"
            "Capabilities:\r\n",
-           Sig, block->VbeVersion, block->OemStringPtr);
+           Sig, block->VbeVersion, block->OemStringPtr[1], block->OemStringPtr[0]);
 
     // printf("%d %d %d %d", block->Capabilities[3], block->Capabilities[2], block->Capabilities[1], block->Capabilities[0]);
     
     printf("%d", (uint32_t)block->Capabilities);
 
-    printf("\r\nVideoModePtr: %p\r\n"
-           "TotalMemory: %d\r\n", block->VideoModePtr, block->CountOf64KBlocks);
+    printf("\r\nVideoModePtr Seg: %p\r\n"
+           "VideoModePtr Off: %p\r\n"
+           "TotalMemory: %d\r\n", block->VideoModePtr[1], block->VideoModePtr[0], block->CountOf64KBlocks);
 }
 
 void readMemory()
 {
     uint8_t *elemsPtr = (uint8_t *)0x7E09;
     memEntry_t *addp = (memEntry_t *)(*((uint16_t *)0x7E0A));
-    
-    printf("Memtable Address: %p\r\n", addp);
 
     for (int i = 0; i < *elemsPtr; i++)
     {
