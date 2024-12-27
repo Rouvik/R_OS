@@ -4,8 +4,11 @@
 #include "../include/stdint.h"
 
 // SCREEN CONSTRAINTS
-const uint32_t SCREEN_WIDTH = 80;
-const uint32_t SCREEN_HEIGHT = 25;
+// const uint32_t SCREEN_WIDTH = 80;
+// const uint32_t SCREEN_HEIGHT = 25;
+
+#define SCREEN_WIDTH (80)               // turned into definitions to avoid redefinition errors
+#define SCREEN_HEIGHT (25)
 
 // TTY Video elements
 extern uint8_t scr_X;

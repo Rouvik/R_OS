@@ -10,7 +10,7 @@ CFLAGS386 ?= -4s -d3 -s -wx -mf -zl -zq -za99
 C_SRC_DIR = ./wat_c
 ASM_SRC_DIR = ./asm
 
-C_TARGETS = $(wildcard $(C_SRC_DIR)/*.c) $(wildcard $(C_SRC_DIR)/drivers/*.c) $(wildcard $(C_SRC_DIR)/interrupts/*.c) $(wildcard $(C_SRC_DIR)/system/*.c)
+C_TARGETS = $(wildcard $(C_SRC_DIR)/*.c) $(wildcard $(C_SRC_DIR)/drivers/*.c) $(wildcard $(C_SRC_DIR)/interrupts/*.c) $(wildcard $(C_SRC_DIR)/system/*.c) $(wildcard $(C_SRC_DIR)/stdlib/*.c)
 ASM_TARGETS = $(wildcard $(ASM_SRC_DIR)/*.s)
 
 C_OBJECTS = $(patsubst $(C_SRC_DIR)/%.c, $(BUILD)/kernel/%.obj, $(C_TARGETS))
@@ -19,7 +19,7 @@ ASM_OBJECTS = $(patsubst $(ASM_SRC_DIR)/%.s, $(BUILD)/kernel/%.obj, $(ASM_TARGET
 .PHONY: all build mkdirs clean generate_auto_files
 
 all: build mkdirs
-	dd if=/dev/zero of=$(BUILD)/kernel.bin bs=512 count=42
+	dd if=/dev/zero of=$(BUILD)/kernel.bin bs=512 count=50
 	dd if=$(BUILD)/kernel_out.bin of=$(BUILD)/kernel.bin conv=notrunc
 	rm $(BUILD)/kernel_out.bin
 
@@ -43,6 +43,7 @@ mkdirs:
 	mkdir -p $(BUILD)/kernel/drivers
 	mkdir -p $(BUILD)/kernel/interrupts
 	mkdir -p $(BUILD)/kernel/system
+	mkdir -p $(BUILD)/kernel/stdlib
 
 clean:
 	rm $(BUILD)/kernel.bin

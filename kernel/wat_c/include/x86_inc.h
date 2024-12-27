@@ -17,4 +17,7 @@ void __cdecl x86_cli();
 void __cdecl x86_outb(uint16_t portNumber, uint8_t data);
 uint8_t __cdecl x86_inb(uint16_t portNumber);
 
+// VGA
+uint16_t __cdecl x86_setVideoMode(uint16_t mode);
+
 #endif // __x86INC__

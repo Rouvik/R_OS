@@ -1,7 +1,7 @@
 #include "idt.h"
 
 #include "../include/stdint.h"
-#include "../include/stdio.h"
+#include "../stdlib/stdio.h"
 
 IDTEntry_t g_IDT[256];
 IDTDesciptor_t g_IDTDescriptor = { .limit = sizeof(g_IDT) - 1, .ptr = g_IDT };

@@ -25,17 +25,25 @@ bits 16
 %define KbdControllerDataPort 0x60
 %define KbdControllerCommandPort 0x64
 
-%define kernel_start_loc 0x8800
+%define kernel_start_loc 0x8A00
+
+%define VesaModeInfoBlock_size 256
+
+%define ExpectedXResolution 720
+%define ExpectedYResolution 480
+%define ExpectedDepth 32
 
 jmp short entry
 nop
 ; boot setup table ---------------------------
-reserved_sectors: db 3      ; reserved sectors required to be loaded
+reserved_sectors: db 4      ; reserved sectors required to be loaded
 bootdrive_number: db 0      ; the boot drive number to be stored here again
 gdt_location: dd 0          ; store the dynamic GDT location here
 memtable_size: db 0         ; store the Memory Map size here (the number of elements)
-memtable_loc: dw 0          ; store teh Memory Map location here
+memtable_loc: dw 0          ; store the Memory Map location here
 vbe_info_loc: dw 0          ; store the location of vbe table here
+vbe_mode_info_loc: dw 0     ; store the location of vbe mode info here
+vbe_selected_mode: dw 0     ; store the selected VESA mode here
 
 entry:
     mov [bootdrive_number], dl          ; save the bootdrive number again
@@ -67,14 +75,25 @@ entry:
     mov si, vesa_reading_msg            ; read VESA info to VESA Block Buffer
     call ttyWrite
 
-    mov [vbe_info_loc], word VesaInfoBlockBuffer   ; save VESA Info address
+    mov [vbe_info_loc], word VesaInfoBlockBuffer    ; save VESA Info address
     mov di, VesaInfoBlockBuffer                     ; The buffer to write to
     call get_vesa_info                              ; Read VESA VGA info
+
+    ; mov cx, 407
+    ; mov di, VesaModeInfoBlockBuffer
+    ; call get_vesa_mode_info
+
+    mov [vbe_mode_info_loc], word VesaModeInfoBlockBuffer       ; save VESA Info address
+    call find_desired_vesa_mode                                 ; Find the desired VESA mode
+    mov [vbe_selected_mode], eax
+
+    mov si, vesa_mode_select_success_msg                        ; VESA mode selected successfully
+    call ttyWrite
 
     mov si, setup_kernel_msg
     call ttyWrite
 
-    call LoadKernel
+    call LoadKernel                                             ; Load the kernel
 
     mov si, setup_gdt_msg
     call ttyWrite
@@ -298,7 +317,7 @@ gen_memory_table:
 LoadKernel:
     push bx
 
-    mov al, 42                      ; read 42 sectors (hardcoded kernel size, will improvise this later)
+    mov al, 50                      ; read 50 sectors (hardcoded kernel size, will improvise this later)
     mov ch, 0                       ; from cylinder 0
     mov cl, 3                       ; sector 3
     add cl, [reserved_sectors]      ; and the reserved sectors later
@@ -331,6 +350,7 @@ disk_reset_error_msg: db "Failed to reset disk...please reboot", ENDL, 0
 vesa_reading_msg: db "Reading VESA info...", ENDL, 0
 vesa_success_msg: db "Successfully read VESA info!", ENDL, 0
 vesa_failure_msg: db "Failed to read VESA info!", ENDL, 0
+vesa_mode_select_success_msg: db "Successfully selected VESA mode!", ENDL, 0
 
 ; GDT ---------------------------------------
 LoadGDT:
@@ -397,6 +417,60 @@ struc VesaInfoBlock
     .OEMData resb 256
 endstruc
 
+struc VesaModeInfoBlockStruc				;	VesaModeInfoBlock_size = 256 bytes
+	.ModeAttributes		resw 1
+	.FirstWindowAttributes	resb 1
+	.SecondWindowAttributes	resb 1
+	.WindowGranularity	resw 1		;	in KB
+	.WindowSize		resw 1		    ;	in KB
+	.FirstWindowSegment	resw 1		;	0 if not supported
+	.SecondWindowSegment	resw 1  ;	0 if not supported
+	.WindowFunctionPtr	resd 1
+	.BytesPerScanLine	resw 1
+
+	;	Added in Revision 1.2
+	.Width			resw 1		    ;	in pixels(graphics)/columns(text)
+	.Height			resw 1		    ;	in pixels(graphics)/columns(text)
+	.CharWidth		resb 1	    	;	in pixels
+	.CharHeight		resb 1	    	;	in pixels
+	.PlanesCount		resb 1
+	.BitsPerPixel		resb 1
+	.BanksCount		resb 1
+	.MemoryModel		resb 1		;	http://www.ctyme.com/intr/rb-0274.htm#Table82
+	.BankSize		resb 1		    ;	in KB
+	.ImagePagesCount	resb 1		;	count - 1
+	.Reserved1		resb 1		    ;	equals 0 in Revision 1.0-2.0, 1 in 3.0
+
+	.RedMaskSize		resb 1
+	.RedFieldPosition	resb 1
+	.GreenMaskSize		resb 1
+	.GreenFieldPosition	resb 1
+	.BlueMaskSize		resb 1
+	.BlueFieldPosition	resb 1
+	.ReservedMaskSize	resb 1
+	.ReservedMaskPosition	resb 1
+	.DirectColorModeInfo	resb 1
+
+	;	Added in Revision 2.0
+	.LFBAddress		resd 1
+	.OffscreenMemoryOffset	resd 1
+	.OffscreenMemorySize	resw 1  ;	in KB
+	.Reserved2 resb 206             ; available in Revision 3.0, but useless for now
+endstruc
+
+;
+; get_vesa_info - Reads VESA general information
+; Parameters:
+;   - es:di = Pointer to a buffer to store the VESA information
+;
+; This function retrieves general information about the VESA BIOS Extensions (VBE).
+; It uses the VESA function 0x4F00 to get the VBE controller information.
+; The information is stored in a buffer pointed to by the es:di register pair.
+;
+; Returns:
+;   - If successful, the carry flag is cleared and the buffer is filled with VESA information.
+;   - If unsuccessful, the carry flag is set.
+;
 get_vesa_info:
     clc
     mov ax, 0x4f00
@@ -413,11 +487,177 @@ get_vesa_info:
     call ttyWrite
     ret
 
+;
+; get_vesa_mode_info - Reads vesa mode info
+; Parameters:
+;   - cx = VESA mode number
+;   - es:di = 256 byte buffer
+;
+get_vesa_mode_info:
+    push ax
+    clc
+    mov ax, 0x4f01
+    int 0x10
+    cmp ax, 0x004f
+    pop ax
+    jne .failed
+    ret
+
+.failed:
+    stc
+    ret
+
+;
+; find_desired_vesa_mode - Finds the desired vesa mode and sets it to VesaModeInfoBlockBuffer
+; Returns:
+;   - eax = VESA mode number
+; Note: eax is used for returning and is not preserved!
+;
+find_desired_vesa_mode:
+    push ebx
+    push ecx
+    push edx
+    push esi
+    push edi
+
+    mov eax, [VesaInfoBlockBuffer + VesaInfoBlock.VideoModesSegment] ; VESA mode buffer segment
+    shl eax, 16                             ; set to higher 16 bits
+    or eax, [VesaInfoBlockBuffer + VesaInfoBlock.VideoModesOffset]  ; VESA mode buffer offset now eax has the full VESA mode pointer
+
+    sub eax, 2                              ; pre decrement modes adddress by 2
+
+    mov ebx, 0x13                           ; the best mode yet (this is an error value)
+    mov esi, (320 * 200) - ExpectedXResolution * ExpectedYResolution      ; best pixel difference
+    mov edi, (ExpectedDepth - 8) * 2        ; best depth difference
+
+.loop:
+    add eax, 2                              ; update address to next pointer
+    mov ecx, [eax]                          ; read the current mode number
+    cmp ecx, 0xFFFF                         ; if mode number == 0xFFFF then end of list
+    je .done
+
+    push edi                                ; save edi
+    mov di, VesaModeInfoBlockBuffer         ; set the buffer to read the mode info
+    call get_vesa_mode_info                 ; get the mode info
+    pop edi                                 ; restore edi
+    jc .loop                                ; failed to read VESA info continue
+
+    push eax
+    mov ax, word [VesaModeInfoBlockBuffer]  ; check if linear framebuffer supported
+    and ax, 0x90                            ; (attribute & 0x90)
+    cmp ax, 0x90                            ; (attribute & 0x90) != 0x90
+    jne .non_linear                         ; unsupported loop again
+    jmp .linear
+
+.non_linear:
+    pop eax                                 ; restore eax
+    jmp .loop
+
+.linear:
+    mov ax, [VesaInfoBlockBuffer + VesaModeInfoBlockStruc.MemoryModel]
+    cmp ax, 4
+    je .skip1
+    cmp ax, 6
+    je .skip1
+
+    pop eax                                 ; restore eax
+    jmp .loop
+
+.skip1:                                     ; direct match!
+    mov ax, [VesaModeInfoBlockBuffer + VesaModeInfoBlockStruc.Width]
+    cmp ax, ExpectedXResolution
+    jne .skip2
+
+    mov ax, [VesaModeInfoBlockBuffer + VesaModeInfoBlockStruc.Height]
+    cmp ax, ExpectedYResolution
+    jne .skip2
+
+    mov ax, [VesaModeInfoBlockBuffer + VesaModeInfoBlockStruc.BitsPerPixel]
+    cmp ax, ExpectedDepth
+    jne .skip2
+
+    mov ax, cx                              ; set the mode number to return
+    add esp, 4                              ; pop the pushed eax
+    ret                                     ; return    
+
+.skip2:
+    mov eax, [VesaModeInfoBlockBuffer + VesaModeInfoBlockStruc.Width]    ; ax = x * y - ExpectedXResolution * ExpectedYResolution
+    imul eax, [VesaModeInfoBlockBuffer + VesaModeInfoBlockStruc.Height]
+    sub eax, (ExpectedXResolution * ExpectedYResolution)
+    mov edx, eax
+    shr edx, 31
+    xor eax, edx
+    sub eax, edx                           ; eax = abs(x * y - ExpectedXResolution * ExpectedYResolution)
+
+    push eax                                ; save the pixel difference
+    mov eax, [VesaModeInfoBlockBuffer + VesaModeInfoBlockStruc.BitsPerPixel] ; ax = depth
+    cmp eax, ExpectedDepth
+    jl .else
+    sub eax, ExpectedDepth
+    mov edx, eax                        ; edx = depth - ExpectedDepth
+    jmp .if_final
+.else:
+    mov edx, ExpectedDepth
+    sub edx, eax
+    imul edx, 2                     ; edx = (ExpectedDepth - depth) * 2
+    
+.if_final:
+    pop eax                         ; eax = (x * y - ExpectedXResolution * ExpectedYResolution)
+    cmp esi, eax
+    jg .skip3
+    je .andCond
+    jmp .if_final_fail
+
+.andCond:
+    cmp edi, edx
+    jg .skip3
+    jmp .if_final_fail
+
+.skip3:
+    mov ebx, ecx                    ; save the best
+    mov esi, eax
+    mov edi, edx                    ; the next 2 instructions are mandatory
+
+.if_final_fail:
+    pop eax                         ; restore eax
+    jmp .loop
+
+.done:
+    mov ax, ExpectedXResolution         ; ExpectedXResolution == 640 && ExpectedYResolution == 480 && ExpectedDepth == 1 then return 0x11 else return the best mode number
+    cmp ax, 640
+    jne .skip4
+    mov ax, ExpectedYResolution
+    cmp ax, 480
+    jne .skip4
+    mov ax, ExpectedDepth
+    cmp ax, 1
+    jne .skip4
+    mov eax, 0x11
+    ret
+
+.skip4:
+    mov eax, ebx                    ; return the best mode number
+    mov ecx, eax                    ; ecx = the best mode number
+    mov di, VesaModeInfoBlockBuffer ; set the buffer to read the mode info
+    call get_vesa_mode_info         
+    pop edi                         ; restore registers
+    pop esi
+    pop edx
+    pop ecx
+    pop ebx
+    ret
+
 ALIGN(4)
 
 VesaInfoBlockBuffer: istruc VesaInfoBlock
     at VesaInfoBlock.Signature, db "VESA"
     times 508 db 0
+iend
+
+ALIGN(4)
+
+VesaModeInfoBlockBuffer: istruc VesaModeInfoBlockStruc
+    times VesaModeInfoBlock_size db 0
 iend
 
 memory_table_loc:

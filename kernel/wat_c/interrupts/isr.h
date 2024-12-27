@@ -3,7 +3,7 @@
 
 #include "../include/stdint.h"
 #include "../include/gdt_inc.h"
-#include "../include/stdio.h"
+#include "../stdlib/stdio.h"
 #include "idt.h"
 
 typedef struct
@@ -17,7 +17,7 @@ typedef struct
 
 typedef void (*ISR_HandlerF_t)(ISR_Register_t *regs); // typedef functions to handle the interrupts
 
-ISR_HandlerF_t g_ISRHandlers[256];
+extern ISR_HandlerF_t g_ISRHandlers[256];
 
 void __cdecl x86_ISR_Handler(ISR_Register_t *registers);
 

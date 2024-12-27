@@ -10,7 +10,7 @@
 #define PIC_SLAVE_COMMAND 0xA0
 #define PIC_SLAVE_DATA 0xA1
 
-enum
+extern enum
 {
     PIC_ICW1_ICW4 = 0x01,
     PIC_ICW1_SINGLE = 0x02,
@@ -20,7 +20,7 @@ enum
 } PIC_ICW1;
 
 
-enum
+extern enum
 {
     PIC_ICW4_8086 = 0x01,
     PIC_ICW4_AUTO = 0x02,
@@ -29,7 +29,7 @@ enum
     PIC_ICW4_SFNM = 0x10
 } PIC_ICW4;
 
-enum
+extern enum
 {
     PIC_CMD_SPECIFIC_END_OF_INT = 0x60,
     PIC_CMD_NON_SPECIFIC_END_OF_INT = 0x20,

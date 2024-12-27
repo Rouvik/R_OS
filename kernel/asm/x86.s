@@ -8,6 +8,7 @@ global _x86_sti
 global _x86_cli
 global _x86_outb
 global _x86_inb
+global _x86_setVideoMode
 
 ; x86 core ==================================================================
 
@@ -132,4 +133,103 @@ _x86_inb:
     mov dx, [esp + 4]
     xor eax, eax
     in al, dx
+    ret
+
+; Real Mode ==========================================================
+
+%macro x86_enter_RealMode 0
+[bits 32]
+jmp dword 18h:.pmode16
+
+.pmode16:
+    [bits 16]
+
+    mov eax, cr0            ; disable protected mode
+    and al, ~1
+    mov cr0, eax
+
+    jmp dword 00:.rmode
+
+.rmode:
+    mov ax, 0               ; set segments
+    mov ds, ax
+    mov ss, ax
+
+    sti                     ; enable interrupts
+
+%endmacro
+
+%macro x86_enter_ProtectedMode 0
+[bits 16]
+cli
+
+mov eax, cr0                ; enable protected mode
+or al, 1
+mov cr0, eax
+
+jmp dword 08h:.pmode
+
+.pmode:
+    [bits 32]
+
+    mov ax, 0x10
+    mov ds, ax
+    mov ss, ax
+
+%endmacro
+
+[bits 32]
+
+; Video VGA =========================================================
+
+;
+; _x86_setVideoMode - Sets the video mode as requested
+; Function signature: uint16_t x86_setVideoMode(uint16_t mode)
+; Returns:
+;   - success = 1
+;   - failure = 0
+;
+_x86_setVideoMode:
+    [bits 32]
+
+    push ebp
+    mov ebp, esp
+
+    x86_enter_RealMode
+
+    [bits 16]
+    
+    push ax             ; save regs
+    push bx
+    push di
+
+    mov ax, 4F02h
+    mov bx, [ebp + 8]
+    mov di, 0           ; set di to null => no CRTC
+    int 10h
+
+    pop di              ; restore registers
+    pop bx
+    add sp, 2           ; remove ax
+
+    cmp al, 4Fh         ; unsupported
+    jne .failed
+    or ah, ah           ; fail test
+    jnz .failed
+
+    mov ax, 1           ; success
+    jmp .done
+
+.failed:
+    mov ax, 0           ; failure
+
+.done:
+    push ax
+    x86_enter_ProtectedMode
+    [bits 32]
+
+    pop ax
+
+    mov esp, ebp
+    pop ebp
     ret
