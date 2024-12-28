@@ -260,7 +260,7 @@ int __cdecl kmain()
         (((red) << 10) | ((green) << 5) | (blue))
 
     // 640 x 400 rgb 5:5:5 color mode
-    if (x86_setVideoMode(272))
+    if (VGA_setVideoMode(272))
     {
         VbeModeInfoBlock_t *block = (VbeModeInfoBlock_t *)(*((uint16_t *)0x7E0E));
 
@@ -268,8 +268,46 @@ int __cdecl kmain()
         {
             for (int x = 0; x < 640; x++)
             {
-                ((uint16_t *)block->framebuffer)[640 * y + x] = RGB_COLOR(x & 0x1F, y & 0x1F, (x + y) & 0x1F);
+                ((uint16_t *)block->framebuffer)[640 * y + x] = RGB_COLOR(x & 0x1F, y & 0x1F, (x ^ y) & 0x1F);
             }
+        }
+    }
+
+    for (int i = 0; i < 8000000; i++);             // an even longer wait loop
+
+#define RGB_COLOR_321(red, green, blue) \
+    (((red) << 16) | ((green) << 8) | (blue))
+
+    VbeModeInfoBlock_t *block = NULL;
+
+    // 640 x 400 rgb 32 bit x:8:8:8 color mode
+    if (VGA_setVideoMode(321))
+    {
+        block = (VbeModeInfoBlock_t *)(*((uint16_t *)0x7E0E));
+        for (int y = 0; y < 400; y++)
+        {
+            for (int x = 0; x < 640; x++)
+            {
+                ((uint32_t *)block->framebuffer)[640 * y + x] = RGB_COLOR_321(x, y, x ^ y);
+            }
+        }
+    }
+    else
+    {
+        while (1); // crash indefinetly
+    }
+    
+    for (int i = 0; i < 8000000; i++);             // an even longer wait loop
+
+    // 640 x 400 rgb 32 bit x:8:8:8 color mode
+    // rendering a circle using simple distance formula
+    for (int y = 0; y < 400; y++)
+    {
+        for (int x = 0; x < 640; x++)
+        {
+            int x0 = x - 320;
+            int y0 = y - 200;
+            ((uint32_t *)block->framebuffer)[640 * y + x] = x0 * x0 + y0 * y0 < 10000 ? RGB_COLOR_321(x, y, x ^ y) : 0;
         }
     }
 

@@ -527,7 +527,7 @@ find_desired_vesa_mode:
     sub eax, 2                              ; pre decrement modes adddress by 2
 
     mov ebx, 0x13                           ; the best mode yet (this is an error value)
-    mov esi, (320 * 200) - ExpectedXResolution * ExpectedYResolution      ; best pixel difference
+    mov esi, ExpectedXResolution * ExpectedYResolution - (320 * 200)    ; best pixel difference
     mov edi, (ExpectedDepth - 8) * 2        ; best depth difference
 
 .loop:
@@ -554,9 +554,9 @@ find_desired_vesa_mode:
     jmp .loop
 
 .linear:
-    mov ax, [VesaInfoBlockBuffer + VesaModeInfoBlockStruc.MemoryModel]
-    cmp ax, 4
-    je .skip1
+    mov ax, [VesaModeInfoBlockBuffer + VesaModeInfoBlockStruc.MemoryModel]
+    ; cmp ax, 4
+    ; je .skip1
     cmp ax, 6
     je .skip1
 
