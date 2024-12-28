@@ -1,7 +1,7 @@
 Open Watcom Linker Version 2.0 beta Jul 17 2024 02:07:46 (64-bit)
 Copyright (c) 2002-2024 The Open Watcom Contributors. All Rights Reserved.
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       24/12/28 02:21:30
+Created on:       24/12/28 18:52:42
 Executable Image: ../build/kernel_out.bin
 creating a RAW Binary Image executable
 
@@ -13,7 +13,7 @@ creating a RAW Binary Image executable
 Group                           Address              Size
 =====                           =======              ====
 
-DGROUP                          0000c580             0000126c
+DGROUP                          0000c718             000013c8
 
 
 
@@ -25,11 +25,11 @@ Segment                Class          Group          Address         Size
 =======                =====          =====          =======         ====
 
 _ENTRY                 CODE           AUTO           00008a00        00000018
-_TEXT                  CODE           AUTO           00008a20        00003b5d
-CONST                  DATA           DGROUP         0000c580        0000059c
-CONST2                 DATA           DGROUP         0000cb1c        00000080
-_DATA                  DATA           DGROUP         0000cb9c        0000000e
-_BSS                   BSS            DGROUP         0000cbac        00000c40
+_TEXT                  CODE           AUTO           00008a20        00003cf5
+CONST                  DATA           DGROUP         0000c718        000006f8
+CONST2                 DATA           DGROUP         0000ce10        00000080
+_DATA                  DATA           DGROUP         0000ce90        0000000e
+_BSS                   BSS            DGROUP         0000cea0        00000c40
 
 
                         +----------------+
@@ -309,61 +309,63 @@ Module: ../build/kernel/x86.obj(../build/kernel/x86.obj)
 000094e0*      _x86_cli
 000094e2       _x86_outb
 000094ed       _x86_inb
-000094f6       _x86_setVideoMode
+000094fc       _x86_setVideoMode
 Module: ../build/kernel/main.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\main.c)
-0000955c+      memcpy
-0000959f*      readVBEInfo
-00009658*      readVBEModeInfo
-000096e3*      readMemory
-00009769+      timer
-0000977c+      kbd
-000097b4       _kmain
+0000956a+      memcpy
+000095ad+      readVBEInfo
+00009666+      readVBEModeInfo
+000096c7+      readMemory
+0000974d+      timer
+00009760+      kbd
+00009798       _kmain
 Module: ../build/kernel/drivers/8259_pic.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\drivers\8259_pic.c)
-000098ba       PIC_configure
-000099b7*      PIC_mask
-00009a5b*      PIC_disable
-00009aa0*      PIC_send_specific_EOI
-00009b14       PIC_send_non_specific_EOI
-00009b63*      PIC_read_IRR
-00009bcb*      PIC_read_ISR
+00009a26       PIC_configure
+00009b23*      PIC_mask
+00009bc7*      PIC_disable
+00009c0c*      PIC_send_specific_EOI
+00009c80       PIC_send_non_specific_EOI
+00009ccf*      PIC_read_IRR
+00009d37*      PIC_read_ISR
 Module: ../build/kernel/drivers/tty.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\drivers\tty.c)
-00009c33*      clearTTY
-00009c81       putc
-00009df2*      mputc
-00009e39       puts
-00009e94*      mputs
-00009edf*      setCur
-00009f20*      setPos
-00009f59*      setX
-00009f7f*      setY
-0000cb9c+      video_Buffer
-0000cba0       scr_X
-0000cba1       scr_Y
-0000cba2       scr_colorMode
+00009d9f       clearTTY
+00009ded       putc
+00009f5e*      mputc
+00009fa5       puts
+0000a000*      mputs
+0000a04b*      setCur
+0000a08c*      setPos
+0000a0c5*      setX
+0000a0eb*      setY
+0000ce90+      video_Buffer
+0000ce94       scr_X
+0000ce95       scr_Y
+0000ce96       scr_colorMode
+Module: ../build/kernel/drivers/vga.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\drivers\vga.c)
+0000a111       VGA_setVideoMode
 Module: ../build/kernel/interrupts/idt.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\interrupts\idt.c)
-00009fa5       IDT_SetGate
-0000a011       IDT_LoadIDTTable
-0000a032       IDT_EnableGate
-0000cba4+      g_IDTDescriptor
-0000cbac+      g_IDT
+0000a13d       IDT_SetGate
+0000a1a9       IDT_LoadIDTTable
+0000a1ca       IDT_EnableGate
+0000ce98+      g_IDTDescriptor
+0000cea0+      g_IDT
 Module: ../build/kernel/interrupts/irq.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\interrupts\irq.c)
-0000a073+      IRQ_Handler
-0000a13a       IRQ_RegisterHandler
-0000a15c       IRQ_Initialise
-0000d3ac+      g_IRQHandlers
+0000a20b+      IRQ_Handler
+0000a2d2       IRQ_RegisterHandler
+0000a2f4       IRQ_Initialise
+0000d6a0+      g_IRQHandlers
 Module: ../build/kernel/interrupts/isr.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\interrupts\isr.c)
-0000a1b3       _x86_ISR_Handler
-0000a2f5       ISR_RegisterHandler
-0000d3ec+      g_ISRHandlers
+0000a34b       _x86_ISR_Handler
+0000a48d       ISR_RegisterHandler
+0000d6e0+      g_ISRHandlers
 Module: ../build/kernel/interrupts/isr_gen.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\interrupts\isr_gen.c)
-0000a329       ISR_Initialise
+0000a4c1       ISR_Initialise
 Module: ../build/kernel/system/io.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\system\io.c)
-0000c12f       x86_iowait
+0000c2c7       x86_iowait
 Module: ../build/kernel/stdlib/stdio.obj(C:\Users\majir\Desktop\R_OS\kernel\wat_c\stdlib\stdio.c)
-0000c179+      printInt
-0000c228+      printLongInt
-0000c2f3+      printHexInt
-0000c3c5       _printf
+0000c311+      printInt
+0000c3c0+      printLongInt
+0000c48b+      printHexInt
+0000c55d       _printf
 
 
                         +---------------------+
@@ -381,60 +383,60 @@ Module          Segment               Class           Address         Size
 ../build/kernel/kentry.obj
                 _ENTRY                CODE           00008a00  !      00000018
 ../build/kernel/x86.obj
-                _TEXT                 CODE           00009490  !      000000cc
+                _TEXT                 CODE           00009490  !      000000da
 C:\Users\majir\Desktop\R_OS\kernel\wat_c\main.c
-                _TEXT                 CODE           0000955c  !      0000035e
-                CONST                 DATA           0000c580  !      0000013f
-                CONST2                DATA           0000cb1c  !      00000000
-                _DATA                 DATA           0000cb9c  !      00000000
+                _TEXT                 CODE           0000956a  !      000004bc
+                CONST                 DATA           0000c718  !      0000029c
+                CONST2                DATA           0000ce10  !      00000000
+                _DATA                 DATA           0000ce90  !      00000000
 C:\Users\majir\Desktop\R_OS\kernel\wat_c\drivers\8259_pic.c
-                _TEXT                 CODE           000098ba  !      00000379
-                CONST                 DATA           0000c6c0  !      00000000
-                CONST2                DATA           0000cb1c  !      00000000
-                _DATA                 DATA           0000cb9c  !      00000000
+                _TEXT                 CODE           00009a26  !      00000379
+                CONST                 DATA           0000c9b4  !      00000000
+                CONST2                DATA           0000ce10  !      00000000
+                _DATA                 DATA           0000ce90  !      00000000
 C:\Users\majir\Desktop\R_OS\kernel\wat_c\drivers\tty.c
-                _TEXT                 CODE           00009c33  !      00000372
-                CONST                 DATA           0000c6c0  !      00000000
-                CONST2                DATA           0000cb1c  !      00000000
-                _DATA                 DATA           0000cb9c  !      00000007
+                _TEXT                 CODE           00009d9f  !      00000372
+                CONST                 DATA           0000c9b4  !      00000000
+                CONST2                DATA           0000ce10  !      00000000
+                _DATA                 DATA           0000ce90  !      00000007
 C:\Users\majir\Desktop\R_OS\kernel\wat_c\drivers\vga.c
-                _TEXT                 CODE           00009fa5  !      00000000
-                CONST                 DATA           0000c6c0  !      00000000
-                CONST2                DATA           0000cb1c  !      00000000
-                _DATA                 DATA           0000cba4  !      00000000
+                _TEXT                 CODE           0000a111  !      0000002c
+                CONST                 DATA           0000c9b4  !      00000000
+                CONST2                DATA           0000ce10  !      00000000
+                _DATA                 DATA           0000ce98  !      00000000
 C:\Users\majir\Desktop\R_OS\kernel\wat_c\interrupts\idt.c
-                _TEXT                 CODE           00009fa5  !      000000ce
-                CONST                 DATA           0000c6c0  !      00000000
-                CONST2                DATA           0000cb1c  !      00000000
-                _DATA                 DATA           0000cba4  !      00000006
-                _BSS                  BSS            0000cbac  !      00000800
+                _TEXT                 CODE           0000a13d  !      000000ce
+                CONST                 DATA           0000c9b4  !      00000000
+                CONST2                DATA           0000ce10  !      00000000
+                _DATA                 DATA           0000ce98  !      00000006
+                _BSS                  BSS            0000cea0  !      00000800
 C:\Users\majir\Desktop\R_OS\kernel\wat_c\interrupts\irq.c
-                _TEXT                 CODE           0000a073  !      00000140
-                CONST                 DATA           0000c6c0  !      00000070
-                CONST2                DATA           0000cb1c  !      00000000
-                _DATA                 DATA           0000cbac  !      00000000
-                _BSS                  BSS            0000d3ac  !      00000040
+                _TEXT                 CODE           0000a20b  !      00000140
+                CONST                 DATA           0000c9b4  !      00000070
+                CONST2                DATA           0000ce10  !      00000000
+                _DATA                 DATA           0000cea0  !      00000000
+                _BSS                  BSS            0000d6a0  !      00000040
 C:\Users\majir\Desktop\R_OS\kernel\wat_c\interrupts\isr.c
-                _TEXT                 CODE           0000a1b3  !      00000176
-                CONST                 DATA           0000c730  !      000003e2
-                CONST2                DATA           0000cb1c  !      00000080
-                _DATA                 DATA           0000cbac  !      00000000
-                _BSS                  BSS            0000d3ec  !      00000400
+                _TEXT                 CODE           0000a34b  !      00000176
+                CONST                 DATA           0000ca24  !      000003e2
+                CONST2                DATA           0000ce10  !      00000080
+                _DATA                 DATA           0000cea0  !      00000000
+                _BSS                  BSS            0000d6e0  !      00000400
 C:\Users\majir\Desktop\R_OS\kernel\wat_c\interrupts\isr_gen.c
-                _TEXT                 CODE           0000a329  !      00001e06
-                CONST                 DATA           0000cb14  !      00000000
-                CONST2                DATA           0000cb9c  !      00000000
-                _DATA                 DATA           0000cbac  !      00000000
+                _TEXT                 CODE           0000a4c1  !      00001e06
+                CONST                 DATA           0000ce08  !      00000000
+                CONST2                DATA           0000ce90  !      00000000
+                _DATA                 DATA           0000cea0  !      00000000
 C:\Users\majir\Desktop\R_OS\kernel\wat_c\system\io.c
-                _TEXT                 CODE           0000c12f  !      00000024
-                CONST                 DATA           0000cb14  !      00000000
-                CONST2                DATA           0000cb9c  !      00000000
-                _DATA                 DATA           0000cbac  !      00000000
+                _TEXT                 CODE           0000c2c7  !      00000024
+                CONST                 DATA           0000ce08  !      00000000
+                CONST2                DATA           0000ce90  !      00000000
+                _DATA                 DATA           0000cea0  !      00000000
 C:\Users\majir\Desktop\R_OS\kernel\wat_c\stdlib\stdio.c
-                _TEXT                 CODE           0000c153  !      0000042a
-                CONST                 DATA           0000cb14  !      00000008
-                CONST2                DATA           0000cb9c  !      00000000
-                _DATA                 DATA           0000cbac  !      00000000
+                _TEXT                 CODE           0000c2eb  !      0000042a
+                CONST                 DATA           0000ce08  !      00000008
+                CONST2                DATA           0000ce90  !      00000000
+                _DATA                 DATA           0000cea0  !      00000000
 Warning! W1014: stack segment not found
 
 
@@ -443,6 +445,6 @@ Warning! W1014: stack segment not found
                         +-----------------------+
 
 Stack size:  7e00 (32256.)
-Memory size:  4dec (19948.)
+Memory size:  50e0 (20704.)
 Entry point address: 00008a00
-Link time: 00:00.08
+Link time: 00:00.03

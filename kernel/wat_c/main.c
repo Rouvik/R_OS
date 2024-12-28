@@ -5,6 +5,7 @@
 #include "./interrupts/idt.h"
 #include "./interrupts/isr.h"
 #include "./interrupts/irq.h"
+#include "drivers/vga.h"
 
 typedef struct memEntry
 {
@@ -153,7 +154,7 @@ void readVBEModeInfo()
 
     scr_colorMode = COLOR(BLACK, CYAN);
 
-    printf("Width: %d Height: %d BPP: %d Total Bits: %d\r\n", block->width, block->height, block->bpp, block->red_mask + block->green_mask + block->blue_mask + block->reserved_mask);
+    printf("Width: %d Height: %d BPP: %d Framebuffer: %p\r\n", block->width, block->height, block->bpp, block->framebuffer);
 }
 
 void readMemory()
@@ -184,27 +185,27 @@ void kbd(ISR_Register_t *reg)
 
 int __cdecl kmain()
 {
-    // scr_colorMode = COLOR(BLACK, BLACK);
-    // clearTTY();
-    // scr_colorMode = COLOR(BLACK, WHITE);
-    // puts("Welcome to RKernel Version 1.2 (alpha)\n\r"
-    //      "This message is written from RKernel TTY driver\n\r"
-    //      "If you see any errors...please restart the OS or contact developer\n\r\n"
-    //      "The support command line utility and rest of the drivers are work in progress...\n\r");
+    scr_colorMode = COLOR(BLACK, BLACK);
+    clearTTY();
+    scr_colorMode = COLOR(BLACK, WHITE);
+    puts("Welcome to RKernel Version 1.2 (alpha)\n\r"
+         "This message is written from RKernel TTY driver\n\r"
+         "If you see any errors...please restart the OS or contact developer\n\r\n"
+         "The support command line utility and rest of the drivers are work in progress...\n\r");
 
-    // scr_colorMode = COLOR(BLACK, LIGHT_GREEN);
-    // puts("Created/Last Updated by Rouvik Maji 12/11/2024 -- 9:27PM IST\n\r");
+    scr_colorMode = COLOR(BLACK, LIGHT_GREEN);
+    puts("Created/Last Updated by Rouvik Maji 12/11/2024 -- 9:27PM IST\n\r");
 
-    // // scr_colorMode = COLOR(BLACK, RED);
-    // // puts("Note to self: The memory table is stored at 0x8200 and its size(number of 24 bit elements) at 0x7e09\n\r");
+    // scr_colorMode = COLOR(BLACK, RED);
+    // puts("Note to self: The memory table is stored at 0x8200 and its size(number of 24 bit elements) at 0x7e09\n\r");
 
-    // scr_colorMode = COLOR(BLACK, CYAN);
+    scr_colorMode = COLOR(BLACK, CYAN);
 
-    // puts("\nMemory map:\r\n");
+    puts("\nMemory map:\r\n");
 
-    // readMemory(); // print the system memory map
+    readMemory(); // print the system memory map
 
-    // putc('\n');
+    putc('\n');
 
     ISR_Initialise();   // initialise the interrupt table
     IDT_LoadIDTTable(); // load the interrupt table to idtr
@@ -212,19 +213,19 @@ int __cdecl kmain()
     IRQ_RegisterHandler(0, timer);
     IRQ_RegisterHandler(1, kbd);
 
-    // scr_colorMode = COLOR(BLACK, YELLOW);
+    scr_colorMode = COLOR(BLACK, YELLOW);
 
-    // clearTTY();
-    // scr_Y = 0;
-    // readVBEInfo();
-    // puts("\r\n");
-    // readVBEModeInfo();
+    clearTTY();
+    scr_Y = 0;
+    readVBEInfo();
+    puts("\r\n");
+    readVBEModeInfo();
 
-    // scr_colorMode = COLOR(BLACK, RED);
-    // printf("Selected color mode: %d\r\n", *((uint16_t *)0x7E10));
+    scr_colorMode = COLOR(BLACK, RED);
+    printf("Selected color mode: %d\r\n", *((uint16_t *)0x7E10));
 
     // this is the mode that gets selected by the entry VESA VGA driver shabby but good enough
-    if (x86_setVideoMode(19))
+    if (VGA_setVideoMode(19))
     {
         VbeModeInfoBlock_t *block = (VbeModeInfoBlock_t *)(*((uint16_t *)0x7E0E));
 
@@ -241,8 +242,10 @@ int __cdecl kmain()
         puts("Failed to set video mode!\r\n");
     }
 
+    for (int i = 0; i < 2000000; i++);             // a long enough wait loop
+
     // back to TTY mode from VGA mode!
-    if (x86_setVideoMode(3))
+    if (VGA_setVideoMode(3))
     {
         scr_X = 0;
         scr_Y = 0;
@@ -250,27 +253,25 @@ int __cdecl kmain()
         puts("Back to TTY mode!\r\n");
     }
 
+    for (int i = 0; i < 8000000; i++);             // an even longer wait loop
 
-// #define RGB_COLOR(red, green, blue) \
-//     (((red) << 10) | ((green) << 5) | (blue))
+    // test with RGB 5:5:5 mode!
+    #define RGB_COLOR(red, green, blue) \
+        (((red) << 10) | ((green) << 5) | (blue))
+
     // 640 x 400 rgb 5:5:5 color mode
-    // if (x86_setVideoMode(272))
-    // {
-    //     VbeModeInfoBlock_t *block = (VbeModeInfoBlock_t *)(*((uint16_t *)0x7E0E));
+    if (x86_setVideoMode(272))
+    {
+        VbeModeInfoBlock_t *block = (VbeModeInfoBlock_t *)(*((uint16_t *)0x7E0E));
 
-    //     // for (int i = 0; i < 640 * 400; i++)
-    //     // {
-    //     //     ((uint16_t *)block->framebuffer)[i] = RGB_COLOR(31, 31, 31);
-    //     // }
-
-    //     for (int y = 0; y < 400; y++)
-    //     {
-    //         for (int x = 0; x < 640; x++)
-    //         {
-    //             ((uint16_t *)block->framebuffer)[640 * y + x] = RGB_COLOR(x & 0x1F, y & 0x1F, (x + y) & 0x1F);
-    //         }
-    //     }
-    // }
+        for (int y = 0; y < 400; y++)
+        {
+            for (int x = 0; x < 640; x++)
+            {
+                ((uint16_t *)block->framebuffer)[640 * y + x] = RGB_COLOR(x & 0x1F, y & 0x1F, (x + y) & 0x1F);
+            }
+        }
+    }
 
     while (true)
         ; // halt

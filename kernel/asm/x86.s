@@ -137,8 +137,15 @@ _x86_inb:
 
 ; Real Mode ==========================================================
 
+idtr_real_mode:
+    dw 0x03FF               ; limit of IVT = 0x03FF
+    dw 0x0000, 0x0000       ; base address = 0x00000000
+
 %macro x86_enter_RealMode 0
 [bits 32]
+cli
+lidt [idtr_real_mode]   ; reset the ivt to the expected state
+
 jmp dword 18h:.pmode16
 
 .pmode16:
@@ -154,6 +161,7 @@ jmp dword 18h:.pmode16
     mov ax, 0               ; set segments
     mov ds, ax
     mov ss, ax
+
 
     sti                     ; enable interrupts
 
