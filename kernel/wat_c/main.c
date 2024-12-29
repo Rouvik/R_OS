@@ -253,7 +253,7 @@ int __cdecl kmain()
         puts("Back to TTY mode!\r\n");
     }
 
-    for (int i = 0; i < 8000000; i++);             // an even longer wait loop
+    for (int i = 0; i < 6000000; i++);             // an even longer wait loop
 
     // test with RGB 5:5:5 mode!
     #define RGB_COLOR(red, green, blue) \
@@ -273,7 +273,7 @@ int __cdecl kmain()
         }
     }
 
-    for (int i = 0; i < 8000000; i++);             // an even longer wait loop
+    for (int i = 0; i < 6000000; i++);             // an even longer wait loop
 
 #define RGB_COLOR_321(red, green, blue) \
     (((red) << 16) | ((green) << 8) | (blue))
@@ -297,7 +297,7 @@ int __cdecl kmain()
         while (1); // crash indefinetly
     }
     
-    for (int i = 0; i < 8000000; i++);             // an even longer wait loop
+    for (int i = 0; i < 6000000; i++);             // an even longer wait loop
 
     // 640 x 400 rgb 32 bit x:8:8:8 color mode
     // rendering a circle using simple distance formula
