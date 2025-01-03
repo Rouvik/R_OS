@@ -4,8 +4,8 @@ ASM  ?= nasm
 CC386 ?= wcc386
 LD386 ?= wlink
 
-# Flag description: 4(r/s) = 386 instruction with 486 timing, full debug, no stack check, warn all, flat memory, no obj link, quiet, C99
-CFLAGS386 ?= -4s -d3 -s -wx -mf -zl -zq -za99
+# Flag description: 4(r/s) = 386 instruction with 486 timing, full debug, no stack check, warn all, flat memory, no obj link, quiet, C99, ignore constant expression requirement(C99)
+CFLAGS386 ?= -4s -d3 -s -wx -mf -zl -zq -za99 -aa
 
 C_SRC_DIR = ./wat_c
 ASM_SRC_DIR = ./asm

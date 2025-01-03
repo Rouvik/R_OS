@@ -555,9 +555,9 @@ find_desired_vesa_mode:
 
 .linear:
     mov ax, [VesaModeInfoBlockBuffer + VesaModeInfoBlockStruc.MemoryModel]
-    ; cmp ax, 4
+    ; cmp ax, 4                             ; ignore paletted modes
     ; je .skip1
-    cmp ax, 6
+    cmp ax, 6                               ; go for RGB modes
     je .skip1
 
     pop eax                                 ; restore eax
@@ -580,6 +580,9 @@ find_desired_vesa_mode:
     add esp, 4                              ; pop the pushed eax
     ret                                     ; return    
 
+
+; 
+;        https://stackoverflow.com/questions/2639173/x86-assembly-abs-implementation
 .skip2:
     mov eax, [VesaModeInfoBlockBuffer + VesaModeInfoBlockStruc.Width]    ; ax = x * y - ExpectedXResolution * ExpectedYResolution
     imul eax, [VesaModeInfoBlockBuffer + VesaModeInfoBlockStruc.Height]
@@ -639,7 +642,7 @@ find_desired_vesa_mode:
     mov eax, ebx                    ; return the best mode number
     mov ecx, eax                    ; ecx = the best mode number
     mov di, VesaModeInfoBlockBuffer ; set the buffer to read the mode info
-    call get_vesa_mode_info         
+    call get_vesa_mode_info
     pop edi                         ; restore registers
     pop esi
     pop edx
