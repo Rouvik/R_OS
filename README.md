@@ -9,7 +9,7 @@ Also the file `kernel\asm\isr_gen.inc.txt` is named so with a .txt to prevent th
 goes crazy with 512 errors!
 
 ### Version:
-2.2 [Major changes in kernel startup!]
+2.5 [Added support for basic drivers(8259, vga) -> interrupts -> graphics -> real mode transfer -> vga driver for graphics!]
 
 # Sources:
 - [BIOS interrupts list](https://www.ctyme.com/intr/int.htm)
@@ -21,18 +21,19 @@ goes crazy with 512 errors!
 - Not much, presently only bootbase.bin (first boot sector code) is finished and successfully reads and loads bootsetup.bin from
 memory for execution and executes it
 - bootsetup.bin, is in an intermediate step and it loads the kernel(4 sectors wide), enables A20, sets up GDT, and jumps to 32 bit protected mode kernel
-- kernel.bin: Presently contains only a TTY driver for the project and writes some basic info and loads into kernel
+- kernel.bin: Presently contains TTY, 8259 pic and VGA drivers, support for basic required x86 features like real mode jumps, better stdlib, interrupts
 
 # How to use?
 ## Requirements:
 - An emulator: I am using `Qemu with target i386`, you can use Virtual Box but you will need to write your own
 command to execute the binary at `build/main_floppy.img`(this is the OS!)
 - `NASM` as the assembler
-- A debugger: I am using `bochs` and would highly recommend that you do too
+- A debugger: I am using `bochs ROM = "BIOS-bochs-latest" VGAROM = "VGABIOS-lgpl-latest"` and would highly recommend that you do too
 - And mostly knowledge about the topic to fix problems on your system
 
 ## Compile and Run:
 - Run `make` to compile the OS and then use `make emu` to run on Qemu, also you can run with debugger with `make debug`
+- <b style="color=red">THERE IS A BUILD SYSTEM BUG, DONT FORGET THE `-B` FLAG TO MAKE SURE EVERYTHING BUILDS!</b>
 
 # Author:
 Rouvik Maji [Gmail](mailto:majirouvik@gmail.com)

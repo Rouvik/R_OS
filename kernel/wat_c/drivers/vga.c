@@ -1,7 +1,7 @@
 #include "vga.h"
 
 VbeModeInfoBlock_t *VGA_modeInfo;
-uint16_t *VGA_modeID;
+uint16_t VGA_modeID;
 uint32_t VGA_bpp_in_bytes;
 
 VGA_colorMask_t VGA_colorMask;

@@ -133,7 +133,7 @@ extern VbeModeInfoBlock_t *VGA_modeInfo;
 /**
  * @brief Updated by the VGA_getSelectedMode function and stores the selected mode number for video
  */
-extern uint16_t *VGA_modeID;
+extern uint16_t VGA_modeID;
 
 /**
  * @brief Required internally for fast memory access, DO NOT TOUCH, contains the number of bytes of color data per pixel

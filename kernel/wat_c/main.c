@@ -175,7 +175,7 @@ int __cdecl kmain()
 
     if (!VGA_setupGraphicalMode())
     {
-        while (1); // crash indefinetly
+        while (true); // crash indefinetly
     }
     
     for (int y = 0; y < VGA_modeInfo->height; y++)
