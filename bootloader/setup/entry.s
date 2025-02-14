@@ -110,7 +110,12 @@ entry:
     or al, 1
     mov cr0, eax
 
-    jmp dword 08h:kernel_start_loc                ; the kernel sits at kernel_start_loc
+    mov eax, 10h                        ; set the data segment to 10h, 32 bit data segment
+    mov ds, eax
+    mov es, eax                         ; set the extra segment to 10h
+    mov fs, eax                         ; set the fs segment to 10h
+    
+    jmp dword 08h:kernel_start_loc      ; the kernel sits at kernel_start_loc
 
     hlt
 

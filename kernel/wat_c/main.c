@@ -62,39 +62,39 @@ void readVBEModeInfo()
 
     scr_colorMode = COLOR(BLACK, GREEN);
 
-    printf(//"Mode Attributes: %x\r\n"
-        //    "Window A: %x\r\n"
-        //    "Window B: %x\r\n"
-        //    "Granularity: %x\r\n"
-        //    "Window Size: %x\r\n"
-        //    "Segment A: %x\r\n"
-        //    "Segment B: %x\r\n"
-        //    "Win Func Ptr: %x\r\n"
-           "Pitch: %d\r\n"
-           "Width: %d\r\n"
-           "Height: %d\r\n"
-           "W Char: %d\r\n"
-           "Y Char: %d\r\n"
+    printf( //"Mode Attributes: %x\r\n"
+            //    "Window A: %x\r\n"
+            //    "Window B: %x\r\n"
+            //    "Granularity: %x\r\n"
+            //    "Window Size: %x\r\n"
+            //    "Segment A: %x\r\n"
+            //    "Segment B: %x\r\n"
+            //    "Win Func Ptr: %x\r\n"
+        "Pitch: %d\r\n"
+        "Width: %d\r\n"
+        "Height: %d\r\n"
+        "W Char: %d\r\n"
+        "Y Char: %d\r\n"
         //    "Planes: %d\r\n"
-           "BPP: %d\r\n"
-           "Banks: %x\r\n"
-           "Memory Model: %d\r\n"
-           "Bank Size: %x\r\n"
-           "Image Pages: %x\r\n"
-           "Reserved0: %x\r\n"
-           "Red Mask: %d\r\n"
-           "Red Position: %d\r\n"
-           "Green Mask: %d\r\n"
-           "Green Position: %d\r\n"
-           "Blue Mask: %d\r\n"
-           "Blue Position: %d\r\n"
-           "Reserved Mask: %d\r\n"
-           "Reserved Position: %d\r\n"
-           "Direct Color Attributes: %x\r\n"
-           "Framebuffer: %x\r\n"
-           "Off Screen Mem Off: %x\r\n"
-           "Off Screen Mem Size: %x\r\n",
-           /*block->attributes, block->window_a, block->window_b, block->granularity, block->window_size, block->segment_a, block->segment_b, block->win_func_ptr,*/ block->pitch, block->width, block->height, block->w_char, block->y_char, /*block->planes,*/ block->bpp, block->banks, block->memory_model, block->bank_size, block->image_pages, block->reserved0, block->red_mask, block->red_position, block->green_mask, block->green_position, block->blue_mask, block->blue_position, block->reserved_mask, block->reserved_position, block->direct_color_attributes, block->framebuffer, block->off_screen_mem_off, block->off_screen_mem_size);
+        "BPP: %d\r\n"
+        "Banks: %x\r\n"
+        "Memory Model: %d\r\n"
+        "Bank Size: %x\r\n"
+        "Image Pages: %x\r\n"
+        "Reserved0: %x\r\n"
+        "Red Mask: %d\r\n"
+        "Red Position: %d\r\n"
+        "Green Mask: %d\r\n"
+        "Green Position: %d\r\n"
+        "Blue Mask: %d\r\n"
+        "Blue Position: %d\r\n"
+        "Reserved Mask: %d\r\n"
+        "Reserved Position: %d\r\n"
+        "Direct Color Attributes: %x\r\n"
+        "Framebuffer: %x\r\n"
+        "Off Screen Mem Off: %x\r\n"
+        "Off Screen Mem Size: %x\r\n",
+        /*block->attributes, block->window_a, block->window_b, block->granularity, block->window_size, block->segment_a, block->segment_b, block->win_func_ptr,*/ block->pitch, block->width, block->height, block->w_char, block->y_char, /*block->planes,*/ block->bpp, block->banks, block->memory_model, block->bank_size, block->image_pages, block->reserved0, block->red_mask, block->red_position, block->green_mask, block->green_position, block->blue_mask, block->blue_position, block->reserved_mask, block->reserved_position, block->direct_color_attributes, block->framebuffer, block->off_screen_mem_off, block->off_screen_mem_size);
 
     // scr_colorMode = COLOR(BLACK, CYAN);
 
@@ -127,10 +127,17 @@ void kbd(ISR_Register_t *reg)
     printf("Kdb: %x ", kbd_data);
 }
 
-int __cdecl kmain()
+int __cdecl kmain(int PageDirectoryBuffer, int PageTableBuffer, int IdentityPageTableBuffer, int driveNumber)
 {
+
+    //
+    // PAGING WORKS, BUT NOW TTY ADDRESS 0xB8000 IS NOT MAPPED TO A REAL ADDRESS, FIX THAT (IDENTITY MAP IT!)
+    //
+
+
     scr_colorMode = COLOR(BLACK, BLACK);
-    clearTTY();
+    // clearTTY();
+    /*
     scr_colorMode = COLOR(BLACK, WHITE);
     puts("Welcome to RKernel Version 1.2 (alpha)\n\r"
          "This message is written from RKernel TTY driver\n\r"
@@ -177,7 +184,7 @@ int __cdecl kmain()
     {
         while (true); // crash indefinetly
     }
-    
+
     for (int y = 0; y < VGA_modeInfo->height; y++)
     {
         for (int x = 0; x < VGA_modeInfo->width; x++)
@@ -204,6 +211,7 @@ int __cdecl kmain()
             }
         }
     }
+        */
 
     while (true)
         ; // halt
